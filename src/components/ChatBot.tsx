@@ -42,7 +42,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
       fetchUserReflections()
     } else if (isOpen && !user) {
       // For non-authenticated users, load from localStorage
-      const savedReflections = JSON.parse(localStorage.getItem('personaMirrorReflections') || '[]')
+      const savedReflections = JSON.parse(localStorage.getItem('reflectraReflections') || '[]')
       setUserReflections(savedReflections.slice(0, 3)) // Limit to recent 3
     }
     
@@ -91,7 +91,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
     } catch (error) {
       console.error('Error fetching reflections:', error)
       // Fall back to localStorage if Supabase fails
-      const savedReflections = JSON.parse(localStorage.getItem('personaMirrorReflections') || '[]')
+      const savedReflections = JSON.parse(localStorage.getItem('reflectraReflections') || '[]')
       setUserReflections(savedReflections.slice(0, 3))
     }
   }

@@ -92,13 +92,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
-                  Persona Mirror
+                  Reflectra
                 </h1>
                 <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 font-medium">Your Digital Twin for Daily Decisions</p>
               </div>
               <div className="block sm:hidden">
                 <h1 className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
-                  Persona Mirror
+                  Reflectra
                 </h1>
               </div>
             </motion.button>
@@ -243,7 +243,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8">
           <div className="text-center">
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              © {new Date().getFullYear()} Persona Mirror. Empowering authentic decisions through AI.
+              © {new Date().getFullYear()} Reflectra. Empowering authentic decisions through AI.
             </p>
           </div>
         </div>

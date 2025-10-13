@@ -89,7 +89,7 @@ class AIAPIClient {
           console.log('Trying direct Netlify call as fallback...');
           try {
             const fallbackResponse = await axios.post(
-              'https://persona-mirror-ai.netlify.app/.netlify/functions/get-advice',
+              'https://reflectra.netlify.app/.netlify/functions/get-advice',
               {
                 coreValues: userData.coreValues,
                 lifeGoals: userData.lifeGoals,
@@ -175,7 +175,7 @@ class AIAPIClient {
           console.log('Trying direct Netlify call for AI chat as fallback...');
           try {
             const fallbackResponse = await axios.post(
-              'https://persona-mirror-ai.netlify.app/.netlify/functions/chat',
+              'https://reflectra.netlify.app/.netlify/functions/chat',
               {
                 message,
                 userContext: userContext || []
@@ -232,9 +232,9 @@ class AIAPIClient {
         } catch (proxyError) {
           console.log('Proxy health check failed, trying direct...');
           // Try direct as fallback
-          const directResponse = await axios.post(
-            'https://persona-mirror-ai.netlify.app/.netlify/functions/chat',
-            { message: 'Health check' },
+            const directResponse = await axios.post(
+              'https://reflectra.netlify.app/.netlify/functions/chat',
+              { message: 'Health check' },
             { timeout: 10000, validateStatus: () => true }
           );
           

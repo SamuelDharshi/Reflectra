@@ -193,7 +193,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
                 Why choose
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Persona Mirror?</span>
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Reflectra?</span>
               </h2>
               <p className="text-xl text-slate-600 dark:text-slate-400">
                 Unlike generic advice, our AI creates a personalized reflection of your values, 

@@ -1,4 +1,4 @@
-# Persona Mirror - Your AI Digital Twin
+# Reflectra - Your AI Digital Twin
 
 [![Built on Bolt](https://img.shields.io/badge/Built%20on-Bolt-blue?style=flat-square)](https://bolt.new)
 
@@ -121,7 +121,7 @@ To run the project locally:
 ## AI Provider Details
 
 ### Claude Sonnet 4 (Primary)
-Claude Sonnet 4 is the primary AI model for Persona Mirror because:
+Claude Sonnet 4 is the primary AI model for Reflectra because:
 - **Empathetic Understanding**: Superior emotional intelligence for personal guidance
 - **Contextual Memory**: Excellent at referencing previous conversations and reflections
 - **Thoughtful Analysis**: Provides deeper insights into personal values and decision-making

@@ -61,7 +61,7 @@ export default defineConfig({
       '/api/chat': {
         target: process.env.NODE_ENV === 'development' && process.env.NETLIFY_DEV 
           ? 'http://localhost:8888' 
-          : 'https://persona-mirror-ai.netlify.app',
+          : 'https://reflectra.netlify.app',
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path.replace(/^\/api\/chat/, '/.netlify/functions/chat'),

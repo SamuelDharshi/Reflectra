@@ -55,13 +55,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
         setReflections(data || [])
       } else {
         // Fall back to localStorage
-        const savedReflections = JSON.parse(localStorage.getItem('personaMirrorReflections') || '[]')
+        const savedReflections = JSON.parse(localStorage.getItem('reflectraReflections') || '[]')
         setReflections(savedReflections.slice(0, 10))
       }
     } catch (error) {
       console.error('Error loading reflections:', error)
       // Fall back to localStorage if Supabase fails
-      const savedReflections = JSON.parse(localStorage.getItem('personaMirrorReflections') || '[]')
+      const savedReflections = JSON.parse(localStorage.getItem('reflectraReflections') || '[]')
       setReflections(savedReflections.slice(0, 10))
     } finally {
       setLoading(false)
@@ -81,9 +81,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
         if (error) throw error
       } else {
         // Delete from localStorage
-        const savedReflections = JSON.parse(localStorage.getItem('personaMirrorReflections') || '[]')
+        const savedReflections = JSON.parse(localStorage.getItem('reflectraReflections') || '[]')
         const updatedReflections = savedReflections.filter((r: any) => r.id !== reflectionId)
-        localStorage.setItem('personaMirrorReflections', JSON.stringify(updatedReflections))
+        localStorage.setItem('reflectraReflections', JSON.stringify(updatedReflections))
       }
 
       // Update local state
@@ -91,9 +91,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
     } catch (error) {
       console.error('Error deleting reflection:', error)
       // Try localStorage fallback
-      const savedReflections = JSON.parse(localStorage.getItem('personaMirrorReflections') || '[]')
+      const savedReflections = JSON.parse(localStorage.getItem('reflectraReflections') || '[]')
       const updatedReflections = savedReflections.filter((r: any) => r.id !== reflectionId)
-      localStorage.setItem('personaMirrorReflections', JSON.stringify(updatedReflections))
+      localStorage.setItem('reflectraReflections', JSON.stringify(updatedReflections))
       setReflections(prev => prev.filter(r => r.id !== reflectionId))
     }
   }
