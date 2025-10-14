@@ -96,7 +96,7 @@ const CoreValuesStep: React.FC<CoreValuesStepProps> = ({
         
         <div className="mt-8 space-y-6">
           <div className="flex items-center gap-3 mb-4">
-            <Compass size={20} className="text-blue-600 dark:text-blue-400" />
+            <Compass size={20} className="text-amber-600 dark:text-amber-400" />
             <h4 className="text-lg font-bold text-slate-900 dark:text-white">Need inspiration? Explore these categories:</h4>
           </div>
           
@@ -107,10 +107,10 @@ const CoreValuesStep: React.FC<CoreValuesStepProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="p-6 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-800/50 dark:to-blue-950/50 rounded-2xl border border-slate-200/50 dark:border-slate-700/50"
+                className="p-6 bg-gradient-to-br from-slate-50 to-amber-50 dark:from-slate-800/50 dark:to-amber-950/50 rounded-2xl border border-slate-200/50 dark:border-slate-700/50"
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <Star size={16} className="text-blue-600 dark:text-blue-400" />
+                  <Star size={16} className="text-amber-600 dark:text-amber-400" />
                   <h5 className="font-bold text-slate-900 dark:text-white">{category.title}</h5>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -126,8 +126,8 @@ const CoreValuesStep: React.FC<CoreValuesStepProps> = ({
                       disabled={userData.coreValues.includes(value) || userData.coreValues.length >= 5}
                       className={`px-3 py-1.5 text-sm rounded-xl transition-all duration-200 ${
                         userData.coreValues.includes(value)
-                          ? 'bg-blue-600 text-white shadow-lg'
-                          : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/50 disabled:opacity-50 disabled:cursor-not-allowed'
+                          ? 'bg-amber-500 text-white shadow-lg'
+                          : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-amber-300 dark:hover:border-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/50 disabled:opacity-50 disabled:cursor-not-allowed'
                       }`}
                     >
                       {value}

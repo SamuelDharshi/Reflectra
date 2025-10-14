@@ -256,9 +256,9 @@ Trust yourself - you have the wisdom to make the right choice.
 
   const getProviderIcon = () => {
     if (aiProvider.includes('Claude')) {
-      return <Sparkles size={16} className="text-blue-500" />;
+      return <Sparkles size={16} className="text-amber-500" />;
     } else if (aiProvider.includes('Gemini')) {
-      return <Zap size={16} className="text-purple-500" />;
+      return <Zap size={16} className="text-rose-500" />;
     } else {
       return <AlertCircle size={16} className="text-amber-500" />;
     }
@@ -266,9 +266,9 @@ Trust yourself - you have the wisdom to make the right choice.
 
   const getProviderColor = () => {
     if (aiProvider.includes('Claude')) {
-      return 'text-blue-600 dark:text-blue-400';
+      return 'text-amber-600 dark:text-amber-400';
     } else if (aiProvider.includes('Gemini')) {
-      return 'text-purple-600 dark:text-purple-400';
+      return 'text-rose-600 dark:text-rose-400';
     } else {
       return 'text-amber-600 dark:text-amber-400';
     }
@@ -334,7 +334,7 @@ Trust yourself - you have the wisdom to make the right choice.
       <div className="card">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-16">
-            <div className="w-20 h-20 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-6"></div>
+            <div className="w-20 h-20 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin mb-6"></div>
             <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Generating your reflection...</h3>
             <p className="text-lg text-slate-600 dark:text-slate-400">This may take a moment as we process your inputs.</p>
           </div>
@@ -342,13 +342,13 @@ Trust yourself - you have the wisdom to make the right choice.
           <div className="space-y-8">
             {error && (
               <div className={`rounded-2xl p-6 mb-6 border ${
-                isFallback 
+                isFallback
                   ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
-                  : 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800'
+                  : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
               }`}>
                 <div className="flex items-center gap-3 mb-2">
-                  <AlertCircle size={20} className={isFallback ? 'text-amber-600 dark:text-amber-400' : 'text-blue-600 dark:text-blue-400'} />
-                  <p className={`font-medium ${isFallback ? 'text-amber-800 dark:text-amber-200' : 'text-blue-800 dark:text-blue-200'}`}>
+                  <AlertCircle size={20} className={isFallback ? 'text-amber-600 dark:text-amber-400' : 'text-amber-600 dark:text-amber-400'} />
+                  <p className={`font-medium ${isFallback ? 'text-amber-800 dark:text-amber-200' : 'text-amber-800 dark:text-amber-200'}`}>
                     {error}
                   </p>
                 </div>
@@ -370,7 +370,7 @@ Trust yourself - you have the wisdom to make the right choice.
                   className="mb-6"
                 >
                   {paragraph.startsWith('**') || paragraph.startsWith('# ') ? (
-                    <h3 className="text-xl font-bold mb-3 text-blue-600 dark:text-blue-400">
+                    <h3 className="text-xl font-bold mb-3 text-amber-600 dark:text-amber-400">
                       {paragraph.replace(/\*\*/g, '').replace(/^# /, '')}
                     </h3>
                   ) : (

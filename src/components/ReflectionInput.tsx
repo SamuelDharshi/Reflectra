@@ -16,9 +16,9 @@ const ReflectionInput: React.FC<ReflectionInputProps> = ({ onStartReflection, on
     { value: 'excited', label: '😊 Excited', color: 'from-green-500 to-emerald-600' },
     { value: 'neutral', label: '😐 Neutral', color: 'from-slate-500 to-slate-600' },
     { value: 'anxious', label: '😟 Anxious', color: 'from-yellow-500 to-orange-600' },
-    { value: 'motivated', label: '💪 Motivated', color: 'from-blue-500 to-purple-600' },
-    { value: 'confused', label: '🤔 Confused', color: 'from-purple-500 to-pink-600' },
-    { value: 'hopeful', label: '🌟 Hopeful', color: 'from-cyan-500 to-blue-600' },
+    { value: 'motivated', label: '💪 Motivated', color: 'from-amber-500 to-rose-400' },
+    { value: 'confused', label: '🤔 Confused', color: 'from-rose-400 to-violet-400' },
+    { value: 'hopeful', label: '🌟 Hopeful', color: 'from-emerald-500 to-amber-500' },
   ];
 
   const isFormValid = mood && reflection.length >= 20 && goals.length >= 10;
@@ -40,7 +40,7 @@ const ReflectionInput: React.FC<ReflectionInputProps> = ({ onStartReflection, on
           className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white"
         >
           Let's start your
-          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> reflection journey</span>
+          <span className="bg-gradient-to-r from-amber-500 to-rose-400 bg-clip-text text-transparent"> reflection journey</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -79,7 +79,7 @@ const ReflectionInput: React.FC<ReflectionInputProps> = ({ onStartReflection, on
                 onClick={() => setMood(moodOption.value)}
                 className={`p-6 rounded-2xl border-2 transition-all duration-300 ${
                   mood === moodOption.value
-                    ? `border-blue-500 bg-gradient-to-r ${moodOption.color} text-white shadow-xl scale-105`
+                    ? `border-amber-500 bg-gradient-to-r ${moodOption.color} text-white shadow-xl scale-105`
                     : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300 hover:shadow-lg'
                 }`}
               >
@@ -95,7 +95,7 @@ const ReflectionInput: React.FC<ReflectionInputProps> = ({ onStartReflection, on
         {/* Reflection Text */}
         <div className="card space-y-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center">
               <Brain size={24} className="text-white" />
             </div>
             <div>
@@ -159,15 +159,15 @@ const ReflectionInput: React.FC<ReflectionInputProps> = ({ onStartReflection, on
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 rounded-2xl p-6 border border-blue-200/50 dark:border-blue-800/50"
+          className="bg-gradient-to-r from-amber-50 to-rose-50 dark:from-amber-950/50 dark:to-rose-950/50 rounded-2xl p-6 border border-amber-200/50 dark:border-amber-800/50"
         >
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center flex-shrink-0">
               <Lightbulb size={16} className="text-white" />
             </div>
             <div>
-              <h4 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">Tips for better insights</h4>
-              <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+              <h4 className="text-lg font-bold text-amber-900 dark:text-amber-100 mb-2">Tips for better insights</h4>
+              <ul className="text-sm text-amber-800 dark:text-amber-200 space-y-1">
                 <li>• Be honest about your current situation and feelings</li>
                 <li>• Include specific details about what you're facing</li>
                 <li>• Mention any constraints or factors influencing your decision</li>
@@ -196,7 +196,7 @@ const ReflectionInput: React.FC<ReflectionInputProps> = ({ onStartReflection, on
           disabled={!isFormValid}
           className={`flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-xl ${
             isFormValid
-              ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-blue-500/25 hover:shadow-blue-500/40'
+              ? 'bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white shadow-amber-500/25 hover:shadow-amber-500/40'
               : 'bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed'
           }`}
         >

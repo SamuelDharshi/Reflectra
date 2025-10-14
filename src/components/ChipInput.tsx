@@ -64,7 +64,7 @@ const ChipInput: React.FC<ChipInputProps> = ({
           "bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm",
           "border-2 transition-all duration-300",
           isFocused 
-            ? "border-blue-500 shadow-lg shadow-blue-500/20 bg-white dark:bg-slate-800" 
+            ? "border-amber-500 shadow-lg shadow-amber-500/20 bg-white dark:bg-slate-800" 
             : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
         )}
         onClick={() => inputRef.current?.focus()}
@@ -79,7 +79,7 @@ const ChipInput: React.FC<ChipInputProps> = ({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border border-blue-200/50 dark:border-blue-800/50 text-blue-700 dark:text-blue-300 group hover:from-blue-100 hover:to-purple-100 dark:hover:from-blue-900/50 dark:hover:to-purple-900/50 transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-50 to-rose-50 dark:from-amber-950/50 dark:to-rose-950/50 border border-amber-200/50 dark:border-amber-800/50 text-amber-700 dark:text-amber-300 group hover:from-amber-100 hover:to-rose-100 dark:hover:from-amber-900/50 dark:hover:to-rose-900/50 transition-all duration-200"
             >
               <span className="text-sm font-medium">{chip}</span>
               <button
@@ -88,7 +88,7 @@ const ChipInput: React.FC<ChipInputProps> = ({
                   e.stopPropagation();
                   removeChip(index);
                 }}
-                className="p-1 rounded-full hover:bg-blue-200/50 dark:hover:bg-blue-800/50 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-200 transition-colors duration-200"
+                className="p-1 rounded-full hover:bg-amber-200/50 dark:hover:bg-amber-800/50 text-amber-500 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-200 transition-colors duration-200"
                 aria-label={`Remove ${chip}`}
               >
                 <X size={14} />

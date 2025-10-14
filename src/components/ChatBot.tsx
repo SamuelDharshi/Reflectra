@@ -191,10 +191,10 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
 
   const getStatusColor = () => {
     switch (connectionStatus) {
-      case 'connected': return 'text-green-400'
-      case 'fallback': return 'text-yellow-400'
-      case 'offline': return 'text-red-400'
-      case 'checking': return 'text-blue-400'
+      case 'connected': return 'text-emerald-400'
+      case 'fallback': return 'text-amber-400'
+      case 'offline': return 'text-rose-400'
+      case 'checking': return 'text-amber-400'
       default: return 'text-gray-400'
     }
   }
@@ -211,21 +211,21 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
 
   const getStatusIcon = () => {
     switch (connectionStatus) {
-      case 'connected': return <Wifi size={12} className="text-green-400" />
-      case 'fallback': return <Wifi size={12} className="text-yellow-400" />
-      case 'offline': return <WifiOff size={12} className="text-red-400" />
-      case 'checking': return <Loader2 size={12} className="text-blue-400 animate-spin" />
+      case 'connected': return <Wifi size={12} className="text-emerald-400" />
+      case 'fallback': return <Wifi size={12} className="text-amber-400" />
+      case 'offline': return <WifiOff size={12} className="text-rose-400" />
+      case 'checking': return <Loader2 size={12} className="text-amber-400 animate-spin" />
       default: return <AlertCircle size={12} className="text-gray-400" />
     }
   }
 
   const getProviderIcon = (provider?: string) => {
     if (provider?.includes('Claude')) {
-      return <Sparkles size={16} className="text-blue-600 dark:text-blue-400" />
+      return <Sparkles size={16} className="text-amber-600 dark:text-amber-400" />
     } else if (provider?.includes('Gemini')) {
-      return <Zap size={16} className="text-purple-600 dark:text-purple-400" />
+      return <Zap size={16} className="text-rose-600 dark:text-rose-400" />
     } else {
-      return <Bot size={16} className="text-blue-600 dark:text-blue-400" />
+      return <Bot size={16} className="text-amber-600 dark:text-amber-400" />
     }
   }
 
@@ -255,7 +255,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
             }}
           >
             {/* Header */}
-            <div className="p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white flex items-center justify-between">
+            <div className="p-4 bg-gradient-to-r from-amber-500 to-rose-400 text-white flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                   <Sparkles size={18} />
@@ -324,10 +324,10 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                   {message.type === 'bot' && (
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                       message.isError
-                        ? 'bg-amber-100 dark:bg-amber-900/30' 
+                        ? 'bg-amber-100 dark:bg-amber-900/30'
                         : message.isFallback
-                          ? 'bg-yellow-100 dark:bg-yellow-900/30'
-                          : 'bg-blue-100 dark:bg-blue-900/30'
+                          ? 'bg-amber-100 dark:bg-amber-900/30'
+                          : 'bg-amber-100 dark:bg-amber-900/30'
                     }`}>
                       {message.isError ? (
                         <AlertCircle size={16} className="text-amber-600 dark:text-amber-400" />
@@ -340,23 +340,23 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                   <div
                     className={`max-w-[80%] p-3 rounded-2xl ${
                       message.type === 'user'
-                        ? 'bg-blue-600 text-white rounded-br-md'
+                        ? 'bg-gradient-to-r from-amber-500 to-rose-400 text-white rounded-br-md'
                         : message.isError
                           ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-900 dark:text-amber-100 rounded-bl-md border border-amber-200 dark:border-amber-800'
                           : message.isFallback
-                            ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-900 dark:text-yellow-100 rounded-bl-md border border-yellow-200 dark:border-yellow-800'
+                            ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-900 dark:text-amber-100 rounded-bl-md border border-amber-200 dark:border-amber-800'
                             : 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-bl-md'
                     }`}
                   >
                     <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                     <div className="flex items-center justify-between mt-1">
                       <p className={`text-xs opacity-70 ${
-                        message.type === 'user' 
-                          ? 'text-white' 
+                        message.type === 'user'
+                          ? 'text-white'
                           : message.isError
                             ? 'text-amber-700 dark:text-amber-300'
                             : message.isFallback
-                              ? 'text-yellow-700 dark:text-yellow-300'
+                              ? 'text-amber-700 dark:text-amber-300'
                               : 'text-slate-500 dark:text-slate-400'
                       }`}>
                         {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -366,7 +366,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                           message.isError
                             ? 'text-amber-700 dark:text-amber-300'
                             : message.isFallback
-                              ? 'text-yellow-700 dark:text-yellow-300'
+                              ? 'text-amber-700 dark:text-amber-300'
                               : 'text-slate-500 dark:text-slate-400'
                         }`}>
                           {message.provider}
@@ -376,7 +376,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                   </div>
 
                   {message.type === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center flex-shrink-0">
                       <User size={16} className="text-white" />
                     </div>
                   )}
@@ -385,12 +385,12 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
 
               {isLoading && (
                 <div className="flex gap-3 justify-start">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                    <Bot size={16} className="text-blue-600 dark:text-blue-400" />
+                  <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                    <Bot size={16} className="text-amber-600 dark:text-amber-400" />
                   </div>
                   <div className="bg-slate-100 dark:bg-slate-700 p-3 rounded-2xl rounded-bl-md">
                     <div className="flex items-center gap-2">
-                      <Loader2 size={16} className="animate-spin text-blue-500" />
+                      <Loader2 size={16} className="animate-spin text-amber-500" />
                       <span className="text-sm text-slate-600 dark:text-slate-400">AI is thinking...</span>
                     </div>
                   </div>
@@ -409,13 +409,13 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask about your reflections..."
-                  className="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-700 rounded-xl border-none focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-sm"
+                  className="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-700 rounded-xl border-none focus:outline-none focus:ring-2 focus:ring-amber-500/30 text-sm"
                   disabled={isLoading}
                 />
                 <button
                   onClick={sendMessage}
                   disabled={!inputValue.trim() || isLoading}
-                  className="p-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl transition-colors"
+                  className="p-2 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl transition-colors"
                 >
                   <Send size={18} />
                 </button>

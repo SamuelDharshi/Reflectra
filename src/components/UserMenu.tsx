@@ -109,7 +109,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
     return (
       <div className="space-y-3">
         <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-sm font-medium">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-rose-400 flex items-center justify-center text-white text-sm font-medium">
             {getUserInitials()}
           </div>
           <div>
@@ -124,7 +124,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
         
         <button
           onClick={onChatOpen}
-          className="w-full flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl font-medium transition-colors"
+          className="w-full flex items-center gap-3 p-3 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-xl font-medium transition-colors"
         >
           <MessageCircle size={18} />
           AI Chat Assistant
@@ -218,7 +218,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
             >
               <div className="p-4 border-b border-slate-100 dark:border-slate-700">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-medium">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-rose-400 flex items-center justify-center text-white font-medium">
                     {getUserInitials()}
                   </div>
                   <div>
@@ -238,9 +238,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
                     onChatOpen()
                     setIsOpen(false)
                   }}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors text-left"
+                  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors text-left"
                 >
-                  <MessageCircle size={18} className="text-blue-500 dark:text-blue-400" />
+                  <MessageCircle size={18} className="text-amber-500 dark:text-amber-400" />
                   <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                     AI Chat Assistant
                   </span>

@@ -18,6 +18,11 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'sans': ['Inter', 'DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
+				'heading': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+				'body': ['DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

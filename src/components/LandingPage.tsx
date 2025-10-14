@@ -81,11 +81,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
           className="space-y-6"
         >
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none">
-            <span className="bg-gradient-to-r from-slate-900 via-blue-900 to-purple-900 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-slate-900 via-amber-900 to-rose-900 dark:from-white dark:via-amber-100 dark:to-rose-100 bg-clip-text text-transparent">
               Your AI-Powered
             </span>
             <br />
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-500 via-rose-400 to-violet-400 bg-clip-text text-transparent">
               Self-Reflection Tool
             </span>
           </h1>
@@ -104,7 +104,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
         >
           <button
             onClick={onStartReflection}
-            className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl text-lg font-semibold transition-all duration-300 shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105"
+            className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl text-lg font-semibold transition-all duration-300 shadow-2xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-105"
           >
             Start Your Reflection Journey
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
@@ -112,7 +112,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
           
           <button
             onClick={onGetStarted}
-            className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-amber-200 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-slate-700 hover:border-amber-300 dark:hover:border-slate-600 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             Learn More
           </button>
@@ -150,7 +150,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
         >
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
             Everything you need for
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> better decisions</span>
+            <span className="bg-gradient-to-r from-amber-500 to-rose-400 bg-clip-text text-transparent"> better decisions</span>
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
             Our AI understands your unique situation and provides personalized guidance 
@@ -165,9 +165,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 * index }}
-              className="group p-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:border-blue-300/50 dark:hover:border-blue-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10"
+              className="group p-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:border-amber-300/50 dark:hover:border-amber-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/10"
             >
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <feature.icon size={24} className="text-white" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
@@ -193,7 +193,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
                 Why choose
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Reflectra?</span>
+                <span className="bg-gradient-to-r from-amber-500 to-rose-400 bg-clip-text text-transparent"> Reflectra?</span>
               </h2>
               <p className="text-xl text-slate-600 dark:text-slate-400">
                 Unlike generic advice, our AI creates a personalized reflection of your values, 
@@ -210,7 +210,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
                   transition={{ duration: 0.6, delay: 0.3 + 0.1 * index }}
                   className="flex items-center gap-4"
                 >
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 flex items-center justify-center flex-shrink-0">
                     <CheckCircle size={16} className="text-white" />
                   </div>
                   <span className="text-lg text-slate-700 dark:text-slate-300 font-medium">
@@ -225,7 +225,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
               onClick={onStartReflection}
-              className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl text-lg font-semibold transition-all duration-300 shadow-xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105"
+              className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl text-lg font-semibold transition-all duration-300 shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-105"
             >
               Try It Now - Free
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
@@ -239,10 +239,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
             className="relative"
           >
             {/* App preview mockup */}
-            <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 rounded-3xl p-8 border border-blue-200/50 dark:border-blue-800/50">
+            <div className="relative bg-gradient-to-br from-amber-50 to-rose-50 dark:from-amber-950/50 dark:to-rose-950/50 rounded-3xl p-8 border border-amber-200/50 dark:border-amber-800/50">
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center">
                     <Brain size={24} className="text-white" />
                   </div>
                   <div>
@@ -253,20 +253,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
                 
                 <div className="space-y-3">
                   <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div className="h-full w-4/5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
+                    <div className="h-full w-4/5 bg-gradient-to-r from-amber-500 to-rose-400 rounded-full"></div>
                   </div>
                   <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div className="h-full w-3/5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
+                    <div className="h-full w-3/5 bg-gradient-to-r from-amber-500 to-rose-400 rounded-full"></div>
                   </div>
                   <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div className="h-full w-4/6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
+                    <div className="h-full w-4/6 bg-gradient-to-r from-amber-500 to-rose-400 rounded-full"></div>
                   </div>
                 </div>
 
                 <div className="flex gap-3">
                   <div className="flex-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
                     <div className="flex items-center gap-2 mb-2">
-                      <Star size={16} className="text-yellow-500" />
+                      <Star size={16} className="text-amber-500" />
                       <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Core Values</span>
                     </div>
                     <div className="space-y-1">
@@ -276,7 +276,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
                   </div>
                   <div className="flex-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
                     <div className="flex items-center gap-2 mb-2">
-                      <Target size={16} className="text-blue-500" />
+                      <Target size={16} className="text-rose-500" />
                       <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Life Goals</span>
                     </div>
                     <div className="space-y-1">
@@ -301,7 +301,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
         >
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
             Ready to discover your
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> true potential?</span>
+            <span className="bg-gradient-to-r from-amber-500 to-rose-400 bg-clip-text text-transparent"> true potential?</span>
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
             Join thousands of people who are making better decisions and living more authentic lives 
@@ -317,7 +317,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
         >
           <button
             onClick={onStartReflection}
-            className="group flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl text-xl font-bold transition-all duration-300 shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105"
+            className="group flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl text-xl font-bold transition-all duration-300 shadow-2xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-105"
           >
             Start Your Journey - Free
             <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform duration-300" />

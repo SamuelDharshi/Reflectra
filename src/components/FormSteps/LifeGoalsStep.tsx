@@ -56,7 +56,7 @@ const LifeGoalsStep: React.FC<LifeGoalsStepProps> = ({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="w-16 h-16 rounded-3xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/25"
+          className="w-16 h-16 rounded-3xl bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-amber-500/25"
         >
           <Target size={32} className="text-white" />
         </motion.div>

@@ -48,7 +48,7 @@ const ProgressButton: React.FC<ProgressButtonProps> = ({
           "flex items-center gap-3 px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg",
           (isNextDisabled || isLoading) 
             ? "opacity-70 cursor-not-allowed bg-slate-300 dark:bg-slate-700 text-slate-500" 
-            : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-blue-500/25 hover:shadow-blue-500/40 hover:shadow-xl"
+            : "bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white shadow-amber-500/25 hover:shadow-amber-500/40 hover:shadow-xl"
         )}
       >
         {isLoading ? (

@@ -56,7 +56,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col transition-all duration-700 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950"
+      className="min-h-screen flex flex-col transition-all duration-700 overflow-hidden bg-gradient-to-br from-amber-50 via-white to-rose-50 dark:from-slate-950 dark:via-slate-900 dark:to-amber-950/30"
       style={{ 
         position: 'relative',
         isolation: 'isolate'
@@ -64,9 +64,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     >
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
-        <div className="absolute -top-40 -right-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-tr from-cyan-400/20 to-blue-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-r from-indigo-400/10 to-purple-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div className="absolute -top-40 -right-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-br from-amber-400/20 to-rose-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-tr from-rose-400/20 to-amber-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-r from-violet-400/10 to-amber-400/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
       
       {/* Header */}
@@ -85,19 +85,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               className="flex items-center gap-2 md:gap-4 hover:opacity-80 transition-opacity duration-300 cursor-pointer group"
             >
               <div className="relative">
-                <div className="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/25 group-hover:shadow-blue-500/40 transition-shadow duration-300">
+                <div className="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br from-amber-500 to-rose-400 flex items-center justify-center shadow-lg shadow-amber-500/25 group-hover:shadow-amber-500/40 transition-shadow duration-300">
                   <Brain className="w-4 h-4 md:w-6 md:h-6 text-white" />
                 </div>
-                <div className="absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-2 h-2 md:w-4 md:h-4 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full animate-pulse"></div>
+                <div className="absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-2 h-2 md:w-4 md:h-4 bg-gradient-to-r from-rose-400 to-amber-500 rounded-full animate-pulse"></div>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
+                <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent group-hover:from-amber-500 group-hover:to-rose-400 transition-all duration-300">
                   Reflectra
                 </h1>
                 <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 font-medium">Your Digital Twin for Daily Decisions</p>
               </div>
               <div className="block sm:hidden">
-                <h1 className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
+                <h1 className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent group-hover:from-amber-500 group-hover:to-rose-400 transition-all duration-300">
                   Reflectra
                 </h1>
               </div>
@@ -113,14 +113,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => openAuthModal('signin')}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
                       >
                         <LogIn size={16} />
                         Sign In
                       </button>
                       <button
                         onClick={() => openAuthModal('signup')}
-                        className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105"
+                        className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-105"
                       >
                         <UserPlus size={16} />
                         Get Started
@@ -190,7 +190,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         </button>
                         <button
                           onClick={() => openAuthModal('signup')}
-                          className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold transition-all duration-300"
+                          className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-amber-500 to-rose-400 text-white rounded-xl font-semibold transition-all duration-300"
                         >
                           <UserPlus size={18} />
                           Get Started
@@ -220,13 +220,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1, duration: 0.3 }}
         onClick={handleChatOpen}
-        className="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl md:rounded-2xl shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-110 transition-all duration-300 flex items-center justify-center group z-50"
+        className="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-xl md:rounded-2xl shadow-2xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-110 transition-all duration-300 flex items-center justify-center group z-50"
         aria-label="Open AI Chat Assistant"
       >
         <MessageCircle size={20} className="md:w-6 md:h-6 group-hover:scale-110 transition-transform duration-200" />
         
         {/* Pulse animation */}
-        <div className="absolute inset-0 rounded-xl md:rounded-2xl bg-blue-400 animate-ping opacity-20"></div>
+        <div className="absolute inset-0 rounded-xl md:rounded-2xl bg-amber-400 animate-ping opacity-20"></div>
         
         {/* Tooltip - Hidden on mobile */}
         <div className="hidden md:block absolute right-full mr-4 px-3 py-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
