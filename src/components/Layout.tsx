@@ -56,12 +56,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col transition-all duration-700 overflow-hidden bg-gradient-to-br from-amber-50 via-white to-rose-50 dark:from-slate-950 dark:via-slate-900 dark:to-amber-950/30"
+      className="min-h-screen flex flex-col transition-all duration-700 bg-gradient-to-br from-amber-50 via-white to-rose-50 dark:from-slate-950 dark:via-slate-900 dark:to-amber-950/30"
       style={{ 
         position: 'relative',
         isolation: 'isolate'
       }}
     >
+      {/* Subtle page overlay so background image shows through but text remains readable */}
+  <div className="fixed inset-0 pointer-events-none bg-white/5 dark:bg-slate-900/20 backdrop-blur-sm" style={{ zIndex: 5 }}></div>
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
         <div className="absolute -top-40 -right-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-br from-amber-400/20 to-rose-400/20 rounded-full blur-3xl animate-pulse"></div>
@@ -71,7 +73,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       {/* Header */}
       <header 
-        className="relative backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border-b border-slate-200/50 dark:border-slate-700/50 sticky top-0"
+        className="relative backdrop-blur-xl bg-white/60 dark:bg-slate-900/80 border-b border-slate-200/50 dark:border-slate-700/50 sticky top-0"
         style={{ zIndex: 40 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 md:py-4">
@@ -207,7 +209,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       {/* Main Content */}
       <main className="relative flex-1" style={{ zIndex: 10 }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 pb-24 md:pb-32">
           <div className="max-w-4xl mx-auto">
             {children}
           </div>
@@ -237,7 +239,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       {/* Footer */}
       <footer 
-        className="relative backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border-t border-slate-200/50 dark:border-slate-700/50"
+        className="relative backdrop-blur-xl bg-white/60 dark:bg-slate-900/80 border-t border-slate-200/50 dark:border-slate-700/50"
         style={{ zIndex: 40 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8">

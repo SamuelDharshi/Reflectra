@@ -1,10 +1,9 @@
 import { Handler } from '@netlify/functions';
-import Anthropic from '@anthropic-ai/sdk';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Use the correct environment variable for Netlify Functions
-const claudeApiKey = process.env.VITE_CLAUDE_API_KEY || process.env.CLAUDE_API_KEY;
-const geminiApiKey = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+// Use Netlify Function environment variables
+const geminiApiKey = process.env.GEMINI_API_KEY;
+const geminiModel = process.env.MODEL_NAME || 'gemini-2.0-flash';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -84,56 +83,25 @@ Respond as if you're having a caring conversation with someone who trusts you wi
     let responseText = '';
     let aiProvider = '';
 
-    // Try Claude first if API key is available
-    if (claudeApiKey && claudeApiKey !== 'your_claude_api_key_here' && claudeApiKey.trim() !== '') {
+    if (geminiApiKey && geminiApiKey.trim() !== '') {
       try {
-        console.log('Attempting to use Claude API for chat...');
-        const anthropic = new Anthropic({
-          apiKey: claudeApiKey,
-        });
-
-        const response = await anthropic.messages.create({
-          model: "claude-3-5-sonnet-20241022",
-          max_tokens: 512,
-          temperature: 0.8,
-          messages: [
-            {
-              role: "user",
-              content: fullPrompt
-            }
-          ]
-        });
-        
-        responseText = response.content[0].type === 'text' ? response.content[0].text : '';
-        aiProvider = 'Claude';
-        console.log('Claude chat response received');
-      } catch (claudeError: any) {
-        console.error('Claude chat API failed:', claudeError);
-        // Fall through to try Gemini
-      }
-    }
-
-    // Try Gemini if Claude failed or is not available
-    if (!responseText && geminiApiKey && geminiApiKey !== 'your_gemini_api_key_here' && geminiApiKey.trim() !== '') {
-      try {
-        console.log('Attempting to use Gemini API for chat...');
+        console.log('Calling Gemini API for chat response...');
         const genAI = new GoogleGenerativeAI(geminiApiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
+        const model = genAI.getGenerativeModel({ model: geminiModel });
         const result = await model.generateContent(fullPrompt);
         const response = await result.response;
-        responseText = response.text();
-        aiProvider = 'Gemini';
+        responseText = response?.text?.() ?? '';
+        aiProvider = `Gemini (${geminiModel})`;
         console.log('Gemini chat response received');
       } catch (geminiError: any) {
         console.error('Gemini chat API failed:', geminiError);
-        // Fall through to fallback
       }
+    } else {
+      console.error('Gemini API key is not configured.');
     }
 
-    // If both APIs failed, provide contextual fallback responses
     if (!responseText || responseText.trim().length === 0) {
-      console.log('Both AI APIs failed, using contextual fallback');
+      console.log('Using contextual fallback response.');
       responseText = generateContextualFallback(message);
       aiProvider = 'Fallback Assistant';
     }

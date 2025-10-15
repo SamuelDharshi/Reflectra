@@ -1,10 +1,9 @@
 import { Handler } from '@netlify/functions';
-import Anthropic from '@anthropic-ai/sdk';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Use the correct environment variable for Netlify Functions
-const claudeApiKey = process.env.VITE_CLAUDE_API_KEY || process.env.CLAUDE_API_KEY;
-const geminiApiKey = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+// Use Netlify Function environment variables
+const geminiApiKey = process.env.GEMINI_API_KEY;
+const geminiModel = process.env.MODEL_NAME || 'gemini-2.0-flash';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -84,56 +83,26 @@ Keep the response under 500 words, use clear formatting with headers, and mainta
     let responseText = '';
     let aiProvider = '';
 
-    // Try Claude first if API key is available
-    if (claudeApiKey && claudeApiKey !== 'your_claude_api_key_here' && claudeApiKey.trim() !== '') {
-      try {
-        console.log('Attempting to use Claude API...');
-        const anthropic = new Anthropic({
-          apiKey: claudeApiKey,
-        });
-
-        const message = await anthropic.messages.create({
-          model: "claude-3-5-sonnet-20241022",
-          max_tokens: 1500,
-          temperature: 0.7,
-          messages: [
-            {
-              role: "user",
-              content: prompt
-            }
-          ]
-        });
-        
-        responseText = message.content[0].type === 'text' ? message.content[0].text : '';
-        aiProvider = 'Claude Sonnet 4';
-        console.log('Claude API response received successfully');
-      } catch (claudeError: any) {
-        console.error('Claude API failed:', claudeError);
-        // Fall through to try Gemini
-      }
-    }
-
-    // Try Gemini if Claude failed or is not available
-    if (!responseText && geminiApiKey && geminiApiKey !== 'your_gemini_api_key_here' && geminiApiKey.trim() !== '') {
+    if (geminiApiKey && geminiApiKey.trim() !== '') {
       try {
         console.log('Attempting to use Gemini API...');
         const genAI = new GoogleGenerativeAI(geminiApiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = genAI.getGenerativeModel({ model: geminiModel });
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
-        responseText = response.text();
-        aiProvider = 'Gemini 2.0 Flash';
+        responseText = response?.text?.() ?? '';
+        aiProvider = `Gemini (${geminiModel})`;
         console.log('Gemini API response received successfully');
       } catch (geminiError: any) {
         console.error('Gemini API failed:', geminiError);
-        // Fall through to fallback
       }
+    } else {
+      console.error('Gemini API key is not configured.');
     }
 
-    // If both APIs failed, provide a structured fallback
     if (!responseText || responseText.trim().length === 0) {
-      console.log('Both AI APIs failed, using structured fallback');
+      console.log('Gemini API unavailable, using structured fallback');
       responseText = generateStructuredFallback(coreValues, lifeGoals, currentStruggles, idealSelf, currentDecision);
       aiProvider = 'Structured Guidance System';
     }
