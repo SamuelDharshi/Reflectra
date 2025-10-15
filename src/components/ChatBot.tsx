@@ -361,11 +361,20 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
             }}
           >
             {/* Header */}
-            <div className="p-4 bg-gradient-to-r from-amber-500 to-rose-400 text-white flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+            <div className="p-4 bg-gradient-to-r from-amber-500 to-rose-400 text-white flex items-center justify-between relative overflow-hidden">
+              {/* Animated background pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.8),transparent_50%)]"></div>
+              </div>
+              
+              <div className="flex items-center gap-3 relative z-10">
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"
+                >
                   <Sparkles size={18} />
-                </div>
+                </motion.div>
                 <div>
                   <h3 className="font-semibold">AI Assistant</h3>
                   <div className="flex items-center gap-2">
@@ -374,12 +383,14 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </div>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={onClose}
-                className="p-1 rounded-full hover:bg-white/20 transition-colors"
+                className="p-1 rounded-full hover:bg-white/20 transition-colors relative z-10"
               >
                 <X size={18} />
-              </button>
+              </motion.button>
             </div>
 
             {/* Context Banner for Non-Authenticated Users */}
@@ -423,28 +434,38 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((message) => (
-                <div
+                <motion.div
                   key={message.id}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.3 }}
                   className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {message.type === 'bot' && (
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      message.isError
-                        ? 'bg-amber-100 dark:bg-amber-900/30'
-                        : message.isFallback
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        message.isError
                           ? 'bg-amber-100 dark:bg-amber-900/30'
-                          : 'bg-amber-100 dark:bg-amber-900/30'
-                    }`}>
+                          : message.isFallback
+                            ? 'bg-amber-100 dark:bg-amber-900/30'
+                            : 'bg-gradient-to-br from-amber-100 to-rose-100 dark:from-amber-900/30 dark:to-rose-900/30'
+                      }`}
+                    >
                       {message.isError ? (
                         <AlertCircle size={16} className="text-amber-600 dark:text-amber-400" />
                       ) : (
                         getProviderIcon(message.provider)
                       )}
-                    </div>
+                    </motion.div>
                   )}
                   
-                  <div
-                    className={`max-w-[80%] p-3 rounded-2xl ${
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className={`max-w-[80%] p-3 rounded-2xl shadow-md ${
                       message.type === 'user'
                         ? 'bg-gradient-to-r from-amber-500 to-rose-400 text-white rounded-br-md'
                         : message.isError
@@ -479,14 +500,19 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                         </p>
                       )}
                     </div>
-                  </div>
+                  </motion.div>
 
                   {message.type === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center flex-shrink-0">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                      className="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center flex-shrink-0 shadow-md"
+                    >
                       <User size={16} className="text-white" />
-                    </div>
+                    </motion.div>
                   )}
-                </div>
+                </motion.div>
               ))}
 
               {isLoading && (

@@ -27,32 +27,44 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
     {
       icon: Target,
       title: "Values-Based Decisions",
-      description: "Make choices that align with your deepest values and long-term vision."
+      description: "Make choices that align with your deepest values and long-term vision.",
+      gradient: "from-amber-500 to-orange-600",
+      iconBg: "bg-gradient-to-br from-amber-500 to-orange-600"
     },
     {
       icon: Brain,
       title: "AI-Powered Insights",
-      description: "Get personalized guidance from advanced AI that understands your unique situation."
+      description: "Get personalized guidance from advanced AI that understands your unique situation.",
+      gradient: "from-violet-500 to-purple-600",
+      iconBg: "bg-gradient-to-br from-violet-500 to-purple-600"
     },
     {
       icon: TrendingUp,
       title: "Personal Growth Tracking",
-      description: "Monitor your progress and see how your decisions shape your ideal self."
+      description: "Monitor your progress and see how your decisions shape your ideal self.",
+      gradient: "from-emerald-500 to-teal-600",
+      iconBg: "bg-gradient-to-br from-emerald-500 to-teal-600"
     },
     {
       icon: Heart,
       title: "Mood & Wellness",
-      description: "Track your emotional state and understand how decisions affect your wellbeing."
+      description: "Track your emotional state and understand how decisions affect your wellbeing.",
+      gradient: "from-rose-500 to-pink-600",
+      iconBg: "bg-gradient-to-br from-rose-500 to-pink-600"
     },
     {
       icon: History,
       title: "Reflection History",
-      description: "Compare past insights with current thoughts to see your evolution."
+      description: "Compare past insights with current thoughts to see your evolution.",
+      gradient: "from-blue-500 to-cyan-600",
+      iconBg: "bg-gradient-to-br from-blue-500 to-cyan-600"
     },
     {
       icon: Share2,
       title: "Export & Share",
-      description: "Save your insights and share meaningful reflections with trusted friends."
+      description: "Save your insights and share meaningful reflections with trusted friends.",
+      gradient: "from-indigo-500 to-purple-600",
+      iconBg: "bg-gradient-to-br from-indigo-500 to-purple-600"
     }
   ];
 
@@ -102,20 +114,27 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -10px rgba(245, 158, 11, 0.4)" }}
+            whileTap={{ scale: 0.98 }}
             onClick={onStartReflection}
-            className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl text-lg font-semibold transition-all duration-300 shadow-2xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-105"
+            className="group relative flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl text-lg font-semibold transition-all duration-300 shadow-2xl shadow-amber-500/25 overflow-hidden"
           >
-            Start Your Reflection Journey
-            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
-          </button>
+            <span className="relative z-10">Start Your Reflection Journey</span>
+            <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+            
+            {/* Shimmer effect */}
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          </motion.button>
           
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
             onClick={onGetStarted}
-            className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-amber-200 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-slate-700 hover:border-amber-300 dark:hover:border-slate-600 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-2 border-amber-200 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-slate-700 hover:border-amber-300 dark:hover:border-slate-600 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             Learn More
-          </button>
+          </motion.button>
         </motion.div>
 
         {/* Trust indicators */}
@@ -165,17 +184,32 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 * index }}
-              className="group p-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:border-amber-300/50 dark:hover:border-amber-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/10"
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
+              className="group relative p-8 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-3xl border border-slate-200/50 dark:border-slate-700/50 hover:border-transparent transition-all duration-300 shadow-xl hover:shadow-3d overflow-hidden"
             >
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <feature.icon size={24} className="text-white" />
+              {/* Gradient overlay on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+              
+              <div className="relative z-10">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className={`w-14 h-14 rounded-2xl ${feature.iconBg} flex items-center justify-center mb-6 shadow-lg group-hover:shadow-glow-md transition-all duration-300`}
+                >
+                  <feature.icon size={28} className="text-white" />
+                </motion.div>
+                
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-amber-600 group-hover:to-rose-500 transition-all duration-300">
+                  {feature.title}
+                </h3>
+                
+                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                {feature.description}
-              </p>
+              
+              {/* Corner accent */}
+              <div className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br ${feature.gradient} opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity duration-300`}></div>
             </motion.div>
           ))}
         </div>

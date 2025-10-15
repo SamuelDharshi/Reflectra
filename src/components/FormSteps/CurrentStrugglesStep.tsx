@@ -32,13 +32,40 @@ const CurrentStrugglesStep: React.FC<CurrentStrugglesStepProps> = ({
       className="space-y-6"
     >
       <div className="text-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-3">Current Struggles</h2>
-        <p className="text-surface-600 dark:text-surface-400 max-w-2xl mx-auto">
-          We all face challenges on our journey. What obstacles or difficulties are you currently dealing with?
-        </p>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="w-16 h-16 rounded-3xl bg-gradient-to-r from-violet-500 to-purple-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-violet-500/25"
+        >
+          <span className="text-4xl">💪</span>
+        </motion.div>
+        
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4"
+        >
+          What challenges are you facing?
+        </motion.h2>
+        
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed"
+        >
+          We all face challenges on our journey. Acknowledging your struggles is the first step toward overcoming them.
+        </motion.p>
       </div>
       
-      <div className="card">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="card"
+      >
         <ChipInput 
           label="Your Current Struggles"
           value={userData.currentStruggles}
@@ -48,13 +75,26 @@ const CurrentStrugglesStep: React.FC<CurrentStrugglesStepProps> = ({
           helperText="Add up to 5 challenges you're currently facing"
         />
         
-        <div className="mt-6 p-4 bg-accent-50 dark:bg-accent-900/10 rounded-md">
-          <h4 className="text-sm font-semibold mb-2 text-accent-700 dark:text-accent-300">Common struggles people face:</h4>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="mt-8 p-6 bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 rounded-2xl border border-violet-200/50 dark:border-violet-800/50"
+        >
+          <h4 className="text-sm font-semibold mb-4 text-violet-700 dark:text-violet-300 flex items-center gap-2">
+            <span className="text-lg">🌟</span>
+            Common struggles people face:
+          </h4>
           <div className="flex flex-wrap gap-2">
             {['Self-doubt', 'Lack of motivation', 'Career uncertainty', 'Financial stress', 
-              'Relationship challenges', 'Health issues', 'Finding purpose'].map((example) => (
-              <button
+              'Relationship challenges', 'Health issues', 'Finding purpose'].map((example, i) => (
+              <motion.button
                 key={example}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.7 + i * 0.05 }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={() => {
                   if (!userData.currentStruggles.includes(example) && userData.currentStruggles.length < 5) {
@@ -62,16 +102,18 @@ const CurrentStrugglesStep: React.FC<CurrentStrugglesStepProps> = ({
                   }
                 }}
                 disabled={userData.currentStruggles.includes(example) || userData.currentStruggles.length >= 5}
-                className="text-xs px-2 py-1 rounded-full bg-white dark:bg-surface-700 border border-surface-200 dark:border-surface-600 
-                          hover:bg-accent-50 dark:hover:bg-accent-900/20 transition-colors 
-                          disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`px-3 py-2 text-sm rounded-xl transition-all duration-200 ${
+                  userData.currentStruggles.includes(example)
+                    ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30'
+                    : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-violet-200 dark:border-violet-700 hover:border-violet-300 dark:hover:border-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950/30 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md'
+                }`}
               >
                 {example}
-              </button>
+              </motion.button>
             ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
       
       <ProgressButton 
         onNext={onNext}

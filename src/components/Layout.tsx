@@ -66,9 +66,34 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   <div className="fixed inset-0 pointer-events-none bg-white/5 dark:bg-slate-900/20 backdrop-blur-sm" style={{ zIndex: 5 }}></div>
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
-        <div className="absolute -top-40 -right-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-br from-amber-400/20 to-rose-400/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-tr from-rose-400/20 to-amber-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-r from-violet-400/10 to-amber-400/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <motion.div
+          animate={{
+            x: [0, 30, 0],
+            y: [0, -30, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-40 -right-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-br from-amber-400/20 to-rose-400/20 rounded-full blur-3xl"
+        ></motion.div>
+        
+        <motion.div
+          animate={{
+            x: [0, -30, 0],
+            y: [0, 30, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute -bottom-40 -left-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-tr from-rose-400/20 to-amber-400/20 rounded-full blur-3xl"
+        ></motion.div>
+        
+        <motion.div
+          animate={{
+            scale: [1, 1.15, 1],
+            rotate: [0, 90, 0],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-r from-violet-400/10 to-amber-400/10 rounded-full blur-3xl"
+        ></motion.div>
       </div>
       
       {/* Header */}
@@ -220,15 +245,33 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <motion.button
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1, duration: 0.3 }}
+        transition={{ delay: 1, duration: 0.3, type: "spring", stiffness: 260, damping: 20 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
         onClick={handleChatOpen}
-        className="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-xl md:rounded-2xl shadow-2xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-110 transition-all duration-300 flex items-center justify-center group z-50"
+        className="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all duration-300 flex items-center justify-center group z-50 relative overflow-hidden"
         aria-label="Open AI Chat Assistant"
       >
-        <MessageCircle size={20} className="md:w-6 md:h-6 group-hover:scale-110 transition-transform duration-200" />
+        {/* Shimmer effect */}
+        <motion.div
+          animate={{ x: ['-100%', '100%'] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent"
+        />
         
-        {/* Pulse animation */}
-        <div className="absolute inset-0 rounded-xl md:rounded-2xl bg-amber-400 animate-ping opacity-20"></div>
+        <motion.div
+          animate={{ rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+        >
+          <MessageCircle size={24} className="relative z-10" />
+        </motion.div>
+        
+        {/* Pulse rings */}
+        <motion.div
+          animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute inset-0 rounded-2xl bg-amber-400"
+        />
         
         {/* Tooltip - Hidden on mobile */}
         <div className="hidden md:block absolute right-full mr-4 px-3 py-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
