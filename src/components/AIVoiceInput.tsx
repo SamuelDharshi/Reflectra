@@ -1,7 +1,7 @@
 "use client";
 
 import { Mic } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/utils/cn";
 
 interface AIVoiceInputProps {
@@ -25,6 +25,7 @@ export function AIVoiceInput({
   const [time, setTime] = useState(0);
   const [isClient, setIsClient] = useState(false);
   const [isDemo, setIsDemo] = useState(demoMode);
+  const hasStartedRef = useRef(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -34,17 +35,23 @@ export function AIVoiceInput({
     let intervalId: any;
 
     if (submitted) {
-      onStart?.();
+      // Only call onStart once when recording starts
+      if (!hasStartedRef.current) {
+        onStart?.();
+        hasStartedRef.current = true;
+      }
       intervalId = setInterval(() => {
         setTime((t) => t + 1);
       }, 1000);
-    } else {
+    } else if (hasStartedRef.current) {
+      // Only call onStop once when recording stops (and we previously started)
       onStop?.(time);
       setTime(0);
+      hasStartedRef.current = false;
     }
 
     return () => clearInterval(intervalId);
-  }, [submitted, time, onStart, onStop]);
+  }, [submitted]); // Only depend on submitted state, not time/callbacks
 
   useEffect(() => {
     if (!isDemo) return;
