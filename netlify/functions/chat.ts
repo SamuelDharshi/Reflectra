@@ -182,6 +182,13 @@ async function handleVoiceFlow(event: any, opts: any) {
     const audio_url = body.audio_url || null; // optional remote URL
     const voiceId = process.env.VOICE_ID || 'alloy';
 
+    console.log('Voice flow started:', { 
+      hasAudio: !!audio_base64, 
+      hasUrl: !!audio_url,
+      hasElevenKey: !!process.env.ELEVEN_API_KEY,
+      hasGeminiKey: !!process.env.GEMINI_API_KEY
+    });
+
     if (!audio_base64 && !audio_url) {
       return {
         statusCode: 400,
@@ -195,12 +202,17 @@ async function handleVoiceFlow(event: any, opts: any) {
     let sttProvider = 'none';
     if (process.env.ELEVEN_API_KEY) {
       try {
+        console.log('Starting ElevenLabs transcription...');
         transcription = await transcribeWithElevenLabs(audio_base64, audio_url);
         sttProvider = 'eleven-stt';
+        console.log('Transcription successful:', transcription);
       } catch (e: any) {
         console.error('ElevenLabs transcription failed:', e?.message || e);
+        console.error('Full error:', e);
         transcription = '';
       }
+    } else {
+      console.warn('ELEVEN_API_KEY not set, skipping transcription');
     }
 
     if (!transcription) {
@@ -215,21 +227,27 @@ async function handleVoiceFlow(event: any, opts: any) {
     let aiProvider = '';
     if (process.env.GEMINI_API_KEY) {
       try {
+        console.log('Generating AI response with Gemini...');
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({ model: process.env.MODEL_NAME || 'gemini-2.0-flash' });
         const result = await model.generateContent(briefPrompt);
         const response = await result.response;
         aiText = response?.text?.() ?? '';
         aiProvider = `Gemini (${process.env.MODEL_NAME || 'default'})`;
+        console.log('AI response generated:', aiText);
       } catch (e: any) {
         console.error('Gemini voice response failed:', e?.message || e);
+        console.error('Full error:', e);
       }
+    } else {
+      console.warn('GEMINI_API_KEY not set, using fallback');
     }
 
     if (!aiText) {
       // Use a succinct fallback
       aiText = generateContextualFallback(transcription).split('\n')[0];
       aiProvider = 'Fallback Assistant';
+      console.log('Using fallback response:', aiText);
     }
 
     // Ensure brevity: enforce short reply (trim to first 1-2 sentences)
@@ -240,12 +258,19 @@ async function handleVoiceFlow(event: any, opts: any) {
     let ttsProvider = 'none';
     if (process.env.ELEVEN_API_KEY) {
       try {
+        console.log('Synthesizing speech with ElevenLabs...');
         audio_base64_out = await synthesizeWithElevenLabs(aiText, voiceId);
         ttsProvider = 'elevenlabs';
+        console.log('TTS successful, audio length:', audio_base64_out?.length);
       } catch (e: any) {
         console.error('ElevenLabs TTS failed:', e?.message || e);
+        console.error('Full error:', e);
       }
+    } else {
+      console.warn('ELEVEN_API_KEY not set, skipping TTS');
     }
+
+    console.log('Voice flow completed:', { sttProvider, aiProvider, ttsProvider });
 
     return {
       statusCode: 200,
@@ -385,7 +410,10 @@ async function transcribeWithElevenLabs(base64Audio: string | null, audioUrl: st
     });
 
     // Extract text from transcription response
-    return transcription?.text || '';
+    // The SDK returns the transcription object directly with a 'text' property
+    const result = transcription as any;
+    console.log('ElevenLabs transcription result:', result);
+    return result?.text || result?.transcription || JSON.stringify(result);
   } catch (err: any) {
     console.error('transcribeWithElevenLabs error:', err?.message || err);
     throw err;
