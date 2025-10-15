@@ -2,6 +2,7 @@ import { Handler } from '@netlify/functions';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import axios from 'axios';
 import FormData from 'form-data';
+import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';
 
 // Use Netlify Function environment variables
 const geminiApiKey = process.env.GEMINI_API_KEY;
@@ -354,34 +355,37 @@ async function transcribeWithElevenLabs(base64Audio: string | null, audioUrl: st
     const apiKey = process.env.ELEVEN_API_KEY;
     if (!apiKey) throw new Error('ELEVEN_API_KEY not set');
 
-    // ElevenLabs STT endpoint (public API shape may vary). We attempt to POST audio and receive a transcription.
-    // If ElevenLabs changes their API, adjust endpoint and request body accordingly.
-    const url = 'https://api.elevenlabs.io/v1/speech-to-text';
-
-    const form = new FormData();
-    if (base64Audio) {
-      const buffer = Buffer.from(base64Audio, 'base64');
-      form.append('file', buffer, { filename: 'audio.mp3', contentType: 'audio/mpeg' });
-    } else if (audioUrl) {
-      const resp = await axios.get(audioUrl, { responseType: 'arraybuffer' });
-      const buf = Buffer.from(resp.data);
-      form.append('file', buf, { filename: 'audio.mp3', contentType: 'audio/mpeg' });
-    }
-
-    // Optional params
-    form.append('language', 'en');
-
-    const resp = await axios.post(url, form, {
-      headers: {
-        'xi-api-key': apiKey,
-        ...form.getHeaders()
-      }
+    // Initialize ElevenLabs client
+    const elevenlabs = new ElevenLabsClient({
+      apiKey: apiKey
     });
 
-    if (resp.status >= 400) throw new Error(`ElevenLabs STT failed: ${resp.status}`);
+    let audioBlob: Blob;
 
-    // Expecting { text: 'transcribed text' } or similar
-    return resp.data?.text || resp.data?.transcript || '';
+    if (base64Audio) {
+      // Convert base64 to buffer and create blob
+      const buffer = Buffer.from(base64Audio, 'base64');
+      audioBlob = new Blob([buffer], { type: 'audio/webm' });
+    } else if (audioUrl) {
+      // Fetch remote audio and create blob
+      const resp = await axios.get(audioUrl, { responseType: 'arraybuffer' });
+      const buf = Buffer.from(resp.data);
+      audioBlob = new Blob([buf], { type: 'audio/mpeg' });
+    } else {
+      throw new Error('No audio provided');
+    }
+
+    // Use ElevenLabs SDK for speech-to-text
+    const transcription = await elevenlabs.speechToText.convert({
+      file: audioBlob,
+      modelId: "scribe_v1",
+      tagAudioEvents: false,
+      languageCode: "eng",
+      diarize: false
+    });
+
+    // Extract text from transcription response
+    return transcription?.text || '';
   } catch (err: any) {
     console.error('transcribeWithElevenLabs error:', err?.message || err);
     throw err;
