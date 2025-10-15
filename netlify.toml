@@ -2,6 +2,11 @@
   publish = "dist"
   command = "npm run build"
 
+[build.environment]
+# Allow Netlify's secret scanner to omit the public Supabase keys (anon key + URL)
+# These are Vite public env vars required at build/runtime.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL"
+
 [functions]
   node_bundler = "esbuild"
 
@@ -32,7 +37,7 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Permissions-Policy = "camera=(), microphone=(self), geolocation=()"
 
 # SEO and performance headers
 [[headers]]

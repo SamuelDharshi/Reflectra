@@ -24,7 +24,7 @@ const ResultsStep: React.FC<ResultsStepProps> = ({ userData, onBack, onReset }) 
   const [showPastAdvice, setShowPastAdvice] = useState(false);
   const [pastAdvice, setPastAdvice] = useState<any[]>([]);
   const [mood, setMood] = useState<string>('');
-  const [quote, setQuote] = useState(getRandomQuote());
+  const quote = getRandomQuote();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -334,12 +334,51 @@ Trust yourself - you have the wisdom to make the right choice.
       <div className="card">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-16">
-            <div className="w-20 h-20 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin mb-6"></div>
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Generating your reflection...</h3>
-            <p className="text-lg text-slate-600 dark:text-slate-400">This may take a moment as we process your inputs.</p>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="w-20 h-20 border-4 border-amber-200 border-t-amber-600 dark:border-slate-700 dark:border-t-amber-500 rounded-full mb-6"
+            ></motion.div>
+            <motion.h3
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-2xl font-bold text-slate-900 dark:text-white mb-2"
+            >
+              Generating your reflection...
+            </motion.h3>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-lg text-slate-600 dark:text-slate-400"
+            >
+              Our AI is carefully analyzing your inputs...
+            </motion.p>
+            
+            {/* Loading dots animation */}
+            <div className="flex gap-2 mt-4">
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{
+                    duration: 0.6,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                  }}
+                  className="w-3 h-3 bg-amber-500 rounded-full"
+                />
+              ))}
+            </div>
           </div>
         ) : (
-          <div className="space-y-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-8"
+          >
             {error && (
               <div className={`rounded-2xl p-6 mb-6 border ${
                 isFallback
@@ -412,7 +451,7 @@ Trust yourself - you have the wisdom to make the right choice.
                 Download
               </button>
 
-              {navigator.share && (
+              {typeof navigator.share === 'function' && (
                 <button
                   onClick={shareAdvice}
                   className="btn btn-secondary flex items-center gap-2"
@@ -422,7 +461,7 @@ Trust yourself - you have the wisdom to make the right choice.
                 </button>
               )}
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
 
@@ -460,7 +499,7 @@ Trust yourself - you have the wisdom to make the right choice.
                       </div>
                     </div>
                     <div className="prose prose-sm dark:prose-invert">
-                      {(reflection.ai_advice || reflection.advice).split('\n\n').slice(0, 2).map((paragraph, i) => (
+                      {(reflection.ai_advice || reflection.advice).split('\n\n').slice(0, 2).map((paragraph: string, i: number) => (
                         <p key={i} className="mb-3">{paragraph}</p>
                       ))}
                       {(reflection.ai_advice || reflection.advice).split('\n\n').length > 2 && (

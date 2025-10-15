@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Moon, Sun, Sparkles, LogIn, UserPlus, MessageCircle, Zap, Brain, Target, Menu, X } from 'lucide-react';
-import { cn } from '../utils/cn';
+import { Moon, Sun, LogIn, UserPlus, MessageCircle, Brain, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import AuthModal from './AuthModal';
@@ -9,9 +8,10 @@ import ChatBot from './ChatBot';
 
 interface LayoutProps {
   children: React.ReactNode;
+  fullWidth?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children, fullWidth = false }) => {
   const [darkMode, setDarkMode] = React.useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
@@ -66,18 +66,44 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   <div className="fixed inset-0 pointer-events-none bg-white/5 dark:bg-slate-900/20 backdrop-blur-sm" style={{ zIndex: 5 }}></div>
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
-        <div className="absolute -top-40 -right-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-br from-amber-400/20 to-rose-400/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-tr from-rose-400/20 to-amber-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-r from-violet-400/10 to-amber-400/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <motion.div
+          animate={{
+            x: [0, 30, 0],
+            y: [0, -30, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-40 -right-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-br from-amber-400/20 to-rose-400/20 rounded-full blur-3xl"
+        ></motion.div>
+        
+        <motion.div
+          animate={{
+            x: [0, -30, 0],
+            y: [0, 30, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute -bottom-40 -left-40 w-60 h-60 md:w-80 md:h-80 bg-gradient-to-tr from-rose-400/20 to-amber-400/20 rounded-full blur-3xl"
+        ></motion.div>
+        
+        <motion.div
+          animate={{
+            scale: [1, 1.15, 1],
+            rotate: [0, 90, 0],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-r from-violet-400/10 to-amber-400/10 rounded-full blur-3xl"
+        ></motion.div>
       </div>
       
       {/* Header */}
       <header 
-        className="relative backdrop-blur-xl bg-white/60 dark:bg-slate-900/80 border-b border-slate-200/50 dark:border-slate-700/50 sticky top-0"
+        className="sticky top-4 z-40 px-4 sm:px-6"
         style={{ zIndex: 40 }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 md:py-4">
-          <div className="flex justify-between items-center">
+        <div className="max-w-6xl mx-auto">
+          <div className="relative px-4 sm:px-6 py-3 md:py-4 rounded-2xl border border-white/30 dark:border-white/10 bg-white/40 dark:bg-slate-900/40 backdrop-blur-2xl shadow-[0_25px_60px_-20px_rgba(15,23,42,0.45)]">
+            <div className="flex justify-between items-center">
             {/* Logo */}
             <motion.button 
               initial={{ opacity: 0, x: -20 }}
@@ -165,52 +191,53 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
-          </div>
+            </div>
 
-          {/* Mobile Menu */}
-          <AnimatePresence>
-            {mobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="md:hidden mt-4 pt-4 border-t border-slate-200/50 dark:border-slate-700/50"
-              >
-                {!loading && (
-                  <div className="space-y-3">
-                    {user ? (
-                      <UserMenu onChatOpen={handleChatOpen} isMobile={true} />
-                    ) : (
-                      <div className="space-y-3">
-                        <button
-                          onClick={() => openAuthModal('signin')}
-                          className="w-full flex items-center justify-center gap-2 p-3 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-xl font-medium transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
-                        >
-                          <LogIn size={18} />
-                          Sign In
-                        </button>
-                        <button
-                          onClick={() => openAuthModal('signup')}
-                          className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-amber-500 to-rose-400 text-white rounded-xl font-semibold transition-all duration-300"
-                        >
-                          <UserPlus size={18} />
-                          Get Started
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
+            {/* Mobile Menu */}
+            <AnimatePresence>
+              {mobileMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="md:hidden mt-3 pt-3 border-t border-white/40 dark:border-white/10"
+                >
+                  {!loading && (
+                    <div className="space-y-3">
+                      {user ? (
+                        <UserMenu onChatOpen={handleChatOpen} isMobile={true} />
+                      ) : (
+                        <div className="space-y-3">
+                          <button
+                            onClick={() => openAuthModal('signin')}
+                            className="w-full flex items-center justify-center gap-2 p-3 text-slate-700 dark:text-slate-300 border border-slate-200/40 dark:border-slate-700/50 rounded-xl font-medium transition-colors hover:bg-white/40 dark:hover:bg-slate-800/40"
+                          >
+                            <LogIn size={18} />
+                            Sign In
+                          </button>
+                          <button
+                            onClick={() => openAuthModal('signup')}
+                            className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-amber-500 to-rose-400 text-white rounded-xl font-semibold transition-all duration-300"
+                          >
+                            <UserPlus size={18} />
+                            Get Started
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </header>
       
       {/* Main Content */}
       <main className="relative flex-1" style={{ zIndex: 10 }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 pb-24 md:pb-32">
-          <div className="max-w-4xl mx-auto">
+        <div className={fullWidth ? "py-0" : "max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 pb-24 md:pb-32"}>
+          <div className={fullWidth ? "" : "max-w-4xl mx-auto"}>
             {children}
           </div>
         </div>
@@ -220,15 +247,33 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <motion.button
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1, duration: 0.3 }}
+        transition={{ delay: 1, duration: 0.3, type: "spring", stiffness: 260, damping: 20 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
         onClick={handleChatOpen}
-        className="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-xl md:rounded-2xl shadow-2xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-110 transition-all duration-300 flex items-center justify-center group z-50"
+        className="!fixed !bottom-4 !right-4 md:!bottom-8 md:!right-8 !left-auto w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all duration-300 flex items-center justify-center group z-50 relative overflow-hidden"
         aria-label="Open AI Chat Assistant"
       >
-        <MessageCircle size={20} className="md:w-6 md:h-6 group-hover:scale-110 transition-transform duration-200" />
+        {/* Shimmer effect */}
+        <motion.div
+          animate={{ x: ['-100%', '100%'] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent"
+        />
         
-        {/* Pulse animation */}
-        <div className="absolute inset-0 rounded-xl md:rounded-2xl bg-amber-400 animate-ping opacity-20"></div>
+        <motion.div
+          animate={{ rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+        >
+          <MessageCircle size={24} className="relative z-10" />
+        </motion.div>
+        
+        {/* Pulse rings */}
+        <motion.div
+          animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute inset-0 rounded-2xl bg-amber-400"
+        />
         
         {/* Tooltip - Hidden on mobile */}
         <div className="hidden md:block absolute right-full mr-4 px-3 py-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Layout from './components/Layout';
 import LandingPage from './components/LandingPage';
@@ -99,7 +99,7 @@ function App() {
   };
 
   return (
-    <Layout>
+    <Layout fullWidth={currentView === 'landing'}>
       <AnimatePresence mode="wait">
         {currentView === 'landing' && (
           <LandingPage 

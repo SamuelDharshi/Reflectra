@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Send, Bot, User, Loader2, Sparkles, AlertCircle, Wifi, WifiOff, Zap } from 'lucide-react'
+import { Mic } from 'lucide-react'
+import { AIVoiceInput } from './AIVoiceInput'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 import { claudeAPI } from '../utils/apiClient'
@@ -34,6 +36,9 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
   const [userReflections, setUserReflections] = useState<any[]>([])
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'offline' | 'checking' | 'fallback'>('checking')
   const [connectionMethod, setConnectionMethod] = useState<string>('')
+  const [showVoice, setShowVoice] = useState(false)
+  const mediaRecorderRef = React.useRef<MediaRecorder | null>(null)
+  const recordedChunksRef = React.useRef<Blob[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const { user } = useAuth()
 
@@ -182,20 +187,111 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
     }
   }
 
+  // Helpers: blob -> base64
+  const blobToBase64 = (blob: Blob) => new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const dataUrl = reader.result as string;
+      // strip prefix
+      const base64 = dataUrl.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+
+  const playBase64Audio = (base64: string) => {
+    try {
+      const audio = new Audio(`data:audio/mpeg;base64,${base64}`);
+      audio.play();
+    } catch (e) {
+      console.error('Failed to play audio:', e);
+    }
+  }
+
+  const handleVoiceStart = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mr = new MediaRecorder(stream);
+      recordedChunksRef.current = [];
+      mr.ondataavailable = (ev) => {
+        if (ev.data && ev.data.size > 0) recordedChunksRef.current.push(ev.data);
+      };
+      mr.start();
+      mediaRecorderRef.current = mr;
+    } catch (err) {
+      console.error('Microphone access denied or error:', err);
+    }
+  }
+
+  const handleVoiceStop = async (_duration: number) => {
+    try {
+      const mr = mediaRecorderRef.current;
+      if (mr && mr.state !== 'inactive') {
+        mr.stop();
+        // Wait small delay for dataavailable events
+        await new Promise(r => setTimeout(r, 200));
+      }
+
+      const chunks = recordedChunksRef.current;
+      if (!chunks || chunks.length === 0) return;
+
+      const blob = new Blob(chunks, { type: 'audio/webm' });
+      const base64 = await blobToBase64(blob);
+
+      // Append user transcript (optimistic)
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        type: 'user',
+        content: '(voice) ' + 'Audio sent',
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, userMessage])
+
+      setIsLoading(true)
+      const resp = await claudeAPI.sendVoiceAudio(base64, userReflections.slice(0,3))
+      setIsLoading(false)
+
+      if (resp) {
+        // display transcription as user message
+        if (resp.transcription) {
+          const transcriptMsg: Message = {
+            id: (Date.now() + 1).toString(),
+            type: 'user',
+            content: resp.transcription,
+            timestamp: new Date()
+          }
+          setMessages(prev => [...prev, transcriptMsg])
+        }
+
+        // display AI response
+        if (resp.aiText) {
+          const botMessage: Message = {
+            id: (Date.now() + 2).toString(),
+            type: 'bot',
+            content: resp.aiText,
+            timestamp: new Date(),
+            provider: resp.aiProvider || 'AI Assistant',
+            isFallback: resp.fallback || false
+          }
+          setMessages(prev => [...prev, botMessage])
+        }
+
+        // play TTS if provided
+        if (resp.audio_base64) {
+          playBase64Audio(resp.audio_base64)
+        }
+      }
+    } catch (err) {
+      console.error('handleVoiceStop error:', err)
+      setIsLoading(false)
+    }
+  }
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       sendMessage()
-    }
-  }
-
-  const getStatusColor = () => {
-    switch (connectionStatus) {
-      case 'connected': return 'text-emerald-400'
-      case 'fallback': return 'text-amber-400'
-      case 'offline': return 'text-rose-400'
-      case 'checking': return 'text-amber-400'
-      default: return 'text-gray-400'
     }
   }
 
@@ -255,11 +351,20 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
             }}
           >
             {/* Header */}
-            <div className="p-4 bg-gradient-to-r from-amber-500 to-rose-400 text-white flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+            <div className="p-4 bg-gradient-to-r from-amber-500 to-rose-400 text-white flex items-center justify-between relative overflow-hidden">
+              {/* Animated background pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.8),transparent_50%)]"></div>
+              </div>
+              
+              <div className="flex items-center gap-3 relative z-10">
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"
+                >
                   <Sparkles size={18} />
-                </div>
+                </motion.div>
                 <div>
                   <h3 className="font-semibold">AI Assistant</h3>
                   <div className="flex items-center gap-2">
@@ -268,12 +373,14 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </div>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={onClose}
-                className="p-1 rounded-full hover:bg-white/20 transition-colors"
+                className="p-1 rounded-full hover:bg-white/20 transition-colors relative z-10"
               >
                 <X size={18} />
-              </button>
+              </motion.button>
             </div>
 
             {/* Context Banner for Non-Authenticated Users */}
@@ -317,28 +424,38 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((message) => (
-                <div
+                <motion.div
                   key={message.id}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.3 }}
                   className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {message.type === 'bot' && (
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      message.isError
-                        ? 'bg-amber-100 dark:bg-amber-900/30'
-                        : message.isFallback
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        message.isError
                           ? 'bg-amber-100 dark:bg-amber-900/30'
-                          : 'bg-amber-100 dark:bg-amber-900/30'
-                    }`}>
+                          : message.isFallback
+                            ? 'bg-amber-100 dark:bg-amber-900/30'
+                            : 'bg-gradient-to-br from-amber-100 to-rose-100 dark:from-amber-900/30 dark:to-rose-900/30'
+                      }`}
+                    >
                       {message.isError ? (
                         <AlertCircle size={16} className="text-amber-600 dark:text-amber-400" />
                       ) : (
                         getProviderIcon(message.provider)
                       )}
-                    </div>
+                    </motion.div>
                   )}
                   
-                  <div
-                    className={`max-w-[80%] p-3 rounded-2xl ${
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className={`max-w-[80%] p-3 rounded-2xl shadow-md ${
                       message.type === 'user'
                         ? 'bg-gradient-to-r from-amber-500 to-rose-400 text-white rounded-br-md'
                         : message.isError
@@ -373,14 +490,19 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                         </p>
                       )}
                     </div>
-                  </div>
+                  </motion.div>
 
                   {message.type === 'user' && (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center flex-shrink-0">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                      className="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center flex-shrink-0 shadow-md"
+                    >
                       <User size={16} className="text-white" />
-                    </div>
+                    </motion.div>
                   )}
-                </div>
+                </motion.div>
               ))}
 
               {isLoading && (
@@ -413,6 +535,15 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                   disabled={isLoading}
                 />
                 <button
+                  onClick={() => setShowVoice((s) => !s)}
+                  disabled={isLoading}
+                  className="p-2 mr-2 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-slate-200"
+                  aria-label="Toggle voice input"
+                >
+                  <Mic size={18} />
+                </button>
+
+                <button
                   onClick={sendMessage}
                   disabled={!inputValue.trim() || isLoading}
                   className="p-2 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl transition-colors"
@@ -420,6 +551,11 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
                   <Send size={18} />
                 </button>
               </div>
+              {showVoice && (
+                <div className="mt-3">
+                  <AIVoiceInput onStart={handleVoiceStart} onStop={handleVoiceStop} />
+                </div>
+              )}
             </div>
           </motion.div>
         </div>

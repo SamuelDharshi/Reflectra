@@ -107,33 +107,55 @@ const CoreValuesStep: React.FC<CoreValuesStepProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="p-6 bg-gradient-to-br from-slate-50 to-amber-50 dark:from-slate-800/50 dark:to-amber-950/50 rounded-2xl border border-slate-200/50 dark:border-slate-700/50"
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="group p-6 bg-gradient-to-br from-slate-50 to-amber-50 dark:from-slate-800/50 dark:to-amber-950/50 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:border-amber-300/50 dark:hover:border-amber-700/50 transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden"
               >
-                <div className="flex items-center gap-2 mb-4">
-                  <Star size={16} className="text-amber-600 dark:text-amber-400" />
-                  <h5 className="font-bold text-slate-900 dark:text-white">{category.title}</h5>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {category.values.map((value) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => {
-                        if (!userData.coreValues.includes(value) && userData.coreValues.length < 5) {
-                          handleValuesChange([...userData.coreValues, value]);
-                        }
-                      }}
-                      disabled={userData.coreValues.includes(value) || userData.coreValues.length >= 5}
-                      className={`px-3 py-1.5 text-sm rounded-xl transition-all duration-200 ${
-                        userData.coreValues.includes(value)
-                          ? 'bg-amber-500 text-white shadow-lg'
-                          : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-amber-300 dark:hover:border-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/50 disabled:opacity-50 disabled:cursor-not-allowed'
-                      }`}
+                {/* Animated background gradient on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-4">
+                    <motion.div
+                      whileHover={{ rotate: 360, scale: 1.2 }}
+                      transition={{ duration: 0.5 }}
                     >
-                      {value}
-                    </button>
-                  ))}
+                      <Star size={18} className="text-amber-600 dark:text-amber-400" />
+                    </motion.div>
+                    <h5 className="font-bold text-slate-900 dark:text-white">{category.title}</h5>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    {category.values.map((value) => {
+                      const isSelected = userData.coreValues.includes(value);
+                      const isDisabled = !isSelected && userData.coreValues.length >= 5;
+                      
+                      return (
+                        <motion.button
+                          key={value}
+                          type="button"
+                          onClick={() => {
+                            if (!isSelected && !isDisabled) {
+                              handleValuesChange([...userData.coreValues, value]);
+                            }
+                          }}
+                          disabled={isDisabled}
+                          whileHover={!isDisabled ? { scale: 1.05, y: -2 } : {}}
+                          whileTap={!isDisabled ? { scale: 0.95 } : {}}
+                          className={`px-3 py-1.5 text-sm rounded-xl transition-all duration-200 ${
+                            isSelected
+                              ? 'bg-gradient-to-r from-amber-500 to-rose-400 text-white shadow-lg shadow-amber-500/30 scale-105'
+                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-amber-300 dark:hover:border-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md'
+                          }`}
+                        >
+                          {value}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
                 </div>
+                
+                {/* Corner decoration */}
+                <div className="absolute -top-6 -right-6 w-16 h-16 bg-amber-400/10 rounded-full blur-2xl group-hover:bg-amber-400/20 transition-all duration-300"></div>
               </motion.div>
             ))}
           </div>

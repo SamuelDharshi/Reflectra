@@ -41,43 +41,81 @@ const IdealSelfStep: React.FC<IdealSelfStepProps> = ({
         </p>
       </div>
       
-      <div className="card">
-        <div className="form-group">
-          <label htmlFor="ideal-self" className="block text-sm font-medium mb-1">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="card relative overflow-hidden group"
+      >
+        {/* Decorative gradient */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-400/10 to-rose-400/10 rounded-bl-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+        
+        <div className="form-group relative z-10">
+          <label htmlFor="ideal-self" className="block text-lg font-semibold mb-3 text-slate-900 dark:text-white flex items-center gap-2">
             Describe your ideal self
+            <motion.span
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="text-amber-500"
+            >
+              ✨
+            </motion.span>
           </label>
-          <textarea
+          <motion.textarea
+            whileFocus={{ scale: 1.01 }}
+            transition={{ duration: 0.2 }}
             id="ideal-self"
             value={userData.idealSelf}
             onChange={handleTextChange}
-            placeholder="I envision myself as someone who..."
-            className="textarea"
+            placeholder="I envision myself as someone who is confident, compassionate, and purposeful. I wake up each day energized and grateful, pursuing meaningful work that aligns with my values..."
+            className="textarea focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all duration-300"
+            rows={8}
             maxLength={maxChars}
           />
-          <div className="flex justify-between mt-1">
-            <span className={`text-xs ${characterCount < minChars ? 'text-error-500' : 'text-surface-500 dark:text-surface-400'}`}>
-              {characterCount < minChars ? `At least ${minChars} characters required` : ''}
-            </span>
-            <span className="text-xs text-surface-500 dark:text-surface-400">
+          <div className="flex justify-between mt-3">
+            <motion.span
+              animate={characterCount < minChars ? { x: [0, -2, 2, 0] } : {}}
+              transition={{ duration: 0.5 }}
+              className={`text-sm font-medium ${characterCount < minChars ? 'text-rose-500 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}
+            >
+              {characterCount < minChars ? `${minChars - characterCount} more characters needed` : '✓ Looking good!'}
+            </motion.span>
+            <span className={`text-sm font-medium ${characterCount > maxChars * 0.9 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500 dark:text-slate-400'}`}>
               {characterCount}/{maxChars}
             </span>
           </div>
         </div>
         
-        <div className="mt-6 p-4 bg-primary-50 dark:bg-primary-900/10 rounded-md">
-          <h4 className="text-sm font-semibold mb-2 text-primary-700 dark:text-primary-300">Need help getting started?</h4>
-          <p className="text-sm text-surface-600 dark:text-surface-400 mb-3">
+        <div className="mt-6 p-6 bg-gradient-to-br from-amber-50 to-rose-50 dark:from-amber-950/30 dark:to-rose-950/30 rounded-2xl border border-amber-200/50 dark:border-amber-800/50">
+          <h4 className="text-sm font-semibold mb-3 text-amber-700 dark:text-amber-300 flex items-center gap-2">
+            <span className="text-lg">💡</span>
+            Need help getting started?
+          </h4>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
             Consider addressing these aspects in your description:
           </p>
-          <ul className="text-sm text-surface-600 dark:text-surface-400 space-y-1 list-disc pl-5">
-            <li>Personal qualities and character traits</li>
-            <li>Daily habits and routines</li>
-            <li>How you handle challenges</li>
-            <li>Your impact on others and the world</li>
-            <li>Balance between different life areas</li>
+          <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
+            {[
+              'Personal qualities and character traits',
+              'Daily habits and routines',
+              'How you handle challenges',
+              'Your impact on others and the world',
+              'Balance between different life areas'
+            ].map((item, i) => (
+              <motion.li
+                key={item}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 + i * 0.1 }}
+                className="flex items-start gap-2"
+              >
+                <span className="text-amber-500 mt-0.5">→</span>
+                <span>{item}</span>
+              </motion.li>
+            ))}
           </ul>
         </div>
-      </div>
+      </motion.div>
       
       <ProgressButton 
         onNext={onNext}

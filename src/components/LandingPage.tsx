@@ -11,11 +11,79 @@ import {
   Users, 
   Star,
   CheckCircle,
-  Download,
   Share2,
   History,
-  MessageCircle
+  Circle,
+  Sparkles
 } from 'lucide-react';
+import { cn } from '../utils/cn';
+
+// Elegant geometric shape component adapted for Reflectra
+function ElegantShape({
+  className,
+  delay = 0,
+  width = 400,
+  height = 100,
+  rotate = 0,
+  gradient = "from-white/[0.08]",
+}: {
+  className?: string;
+  delay?: number;
+  width?: number;
+  height?: number;
+  rotate?: number;
+  gradient?: string;
+}) {
+  return (
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: -150,
+        rotate: rotate - 15,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        rotate: rotate,
+      }}
+      transition={{
+        duration: 2.4,
+        delay,
+        ease: [0.23, 0.86, 0.39, 0.96],
+        opacity: { duration: 1.2 },
+      }}
+      className={cn("absolute", className)}
+    >
+      <motion.div
+        animate={{
+          y: [0, 15, 0],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut",
+        }}
+        style={{
+          width,
+          height,
+        }}
+        className="relative"
+      >
+        <div
+          className={cn(
+            "absolute inset-0 rounded-full",
+            "bg-gradient-to-r to-transparent",
+            gradient,
+            "backdrop-blur-[2px] border-2 border-white/[0.15] dark:border-white/[0.08]",
+            "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
+            "after:absolute after:inset-0 after:rounded-full",
+            "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]"
+          )}
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
 
 interface LandingPageProps {
   onGetStarted: () => void;
@@ -27,32 +95,44 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
     {
       icon: Target,
       title: "Values-Based Decisions",
-      description: "Make choices that align with your deepest values and long-term vision."
+      description: "Make choices that align with your deepest values and long-term vision.",
+      gradient: "from-amber-500 to-orange-600",
+      iconBg: "bg-gradient-to-br from-amber-500 to-orange-600"
     },
     {
       icon: Brain,
       title: "AI-Powered Insights",
-      description: "Get personalized guidance from advanced AI that understands your unique situation."
+      description: "Get personalized guidance from advanced AI that understands your unique situation.",
+      gradient: "from-violet-500 to-purple-600",
+      iconBg: "bg-gradient-to-br from-violet-500 to-purple-600"
     },
     {
       icon: TrendingUp,
       title: "Personal Growth Tracking",
-      description: "Monitor your progress and see how your decisions shape your ideal self."
+      description: "Monitor your progress and see how your decisions shape your ideal self.",
+      gradient: "from-emerald-500 to-teal-600",
+      iconBg: "bg-gradient-to-br from-emerald-500 to-teal-600"
     },
     {
       icon: Heart,
       title: "Mood & Wellness",
-      description: "Track your emotional state and understand how decisions affect your wellbeing."
+      description: "Track your emotional state and understand how decisions affect your wellbeing.",
+      gradient: "from-rose-500 to-pink-600",
+      iconBg: "bg-gradient-to-br from-rose-500 to-pink-600"
     },
     {
       icon: History,
       title: "Reflection History",
-      description: "Compare past insights with current thoughts to see your evolution."
+      description: "Compare past insights with current thoughts to see your evolution.",
+      gradient: "from-blue-500 to-cyan-600",
+      iconBg: "bg-gradient-to-br from-blue-500 to-cyan-600"
     },
     {
       icon: Share2,
       title: "Export & Share",
-      description: "Save your insights and share meaningful reflections with trusted friends."
+      description: "Save your insights and share meaningful reflections with trusted friends.",
+      gradient: "from-indigo-500 to-purple-600",
+      iconBg: "bg-gradient-to-br from-indigo-500 to-purple-600"
     }
   ];
 
@@ -70,84 +150,195 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="space-y-24"
     >
-      {/* Hero Section */}
-      <section className="text-center space-y-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="space-y-6"
-        >
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none">
-            <span className="bg-gradient-to-r from-slate-900 via-amber-900 to-rose-900 dark:from-white dark:via-amber-100 dark:to-rose-100 bg-clip-text text-transparent">
-              Your AI-Powered
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-amber-500 via-rose-400 to-violet-400 bg-clip-text text-transparent">
-              Self-Reflection Tool
-            </span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed">
-            Transform how you make decisions with AI-powered insights that understand your values, 
-            goals, and aspirations. Get personalized guidance that helps you become your ideal self.
-          </p>
-        </motion.div>
+      {/* Hero Section with Geometric Shapes - Full Width */}
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Floating geometric shapes */}
+        <div className="absolute inset-0">
+          <ElegantShape
+            delay={0.3}
+            width={600}
+            height={140}
+            rotate={12}
+            gradient="from-amber-500/[0.18]"
+            className="left-[-15%] md:left-[-8%] top-[10%] md:top-[15%]"
+          />
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-        >
-          <button
-            onClick={onStartReflection}
-            className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl text-lg font-semibold transition-all duration-300 shadow-2xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-105"
-          >
-            Start Your Reflection Journey
-            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
-          </button>
-          
-          <button
-            onClick={onGetStarted}
-            className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-amber-200 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-slate-700 hover:border-amber-300 dark:hover:border-slate-600 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-          >
-            Learn More
-          </button>
-        </motion.div>
+          <ElegantShape
+            delay={0.5}
+            width={500}
+            height={120}
+            rotate={-15}
+            gradient="from-rose-500/[0.18]"
+            className="right-[-10%] md:right-[-3%] top-[65%] md:top-[70%]"
+          />
 
-        {/* Trust indicators */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex flex-wrap justify-center items-center gap-8 pt-8"
-        >
-          <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-            <Shield size={16} />
-            <span className="text-sm font-medium">Privacy First</span>
+          <ElegantShape
+            delay={0.4}
+            width={350}
+            height={90}
+            rotate={-8}
+            gradient="from-violet-500/[0.18]"
+            className="left-[2%] md:left-[8%] bottom-[8%] md:bottom-[12%]"
+          />
+
+          <ElegantShape
+            delay={0.6}
+            width={250}
+            height={70}
+            rotate={20}
+            gradient="from-amber-400/[0.18]"
+            className="right-[10%] md:right-[15%] top-[8%] md:top-[12%]"
+          />
+
+          <ElegantShape
+            delay={0.7}
+            width={180}
+            height={50}
+            rotate={-25}
+            gradient="from-rose-400/[0.18]"
+            className="left-[15%] md:left-[20%] top-[3%] md:top-[8%]"
+          />
+
+          <ElegantShape
+            delay={0.8}
+            width={280}
+            height={75}
+            rotate={15}
+            gradient="from-amber-300/[0.15]"
+            className="right-[25%] md:right-[30%] bottom-[15%] md:bottom-[20%]"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 md:px-6">
+          <div className="max-w-4xl mx-auto text-center space-y-8 pt-16 md:pt-20">
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 1,
+                delay: 0.5,
+                ease: [0.25, 0.4, 0.25, 1],
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] dark:bg-white/[0.05] border border-amber-500/[0.2] dark:border-amber-400/[0.15] mb-8 md:mb-12 backdrop-blur-sm"
+            >
+              <Circle className="h-2 w-2 fill-amber-500 text-amber-500 animate-pulse" />
+              <Sparkles size={14} className="text-amber-500 dark:text-amber-400" />
+              <span className="text-sm text-slate-700 dark:text-slate-300 tracking-wide font-medium">
+                AI-Powered Self-Discovery
+              </span>
+            </motion.div>
+
+            {/* Main Heading */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 1,
+                delay: 0.7,
+                ease: [0.25, 0.4, 0.25, 1],
+              }}
+            >
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 md:mb-8 tracking-tight leading-[1.1]">
+                <span className="bg-clip-text text-transparent bg-gradient-to-b from-slate-900 to-slate-700 dark:from-white dark:to-white/80">
+                  Transform Your
+                </span>
+                <br />
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-rose-400 to-violet-400">
+                  Decision Making Journey
+                </span>
+              </h1>
+            </motion.div>
+
+            {/* Description */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 1,
+                delay: 0.9,
+                ease: [0.25, 0.4, 0.25, 1],
+              }}
+            >
+              <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light tracking-wide max-w-2xl mx-auto px-4">
+                Make confident life decisions with AI-powered insights that understand your values, 
+                goals, and aspirations. Get personalized guidance to become your ideal self.
+              </p>
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 1,
+                delay: 1.1,
+                ease: [0.25, 0.4, 0.25, 1],
+              }}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            >
+              <motion.button
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -10px rgba(245, 158, 11, 0.4)" }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onStartReflection}
+                className="group relative flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl text-lg font-semibold transition-all duration-300 shadow-2xl shadow-amber-500/25 overflow-hidden"
+              >
+                <span className="relative z-10">Start Your Reflection Journey</span>
+                <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+                
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onGetStarted}
+                className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-2 border-amber-200 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-slate-700 hover:border-amber-300 dark:hover:border-slate-600 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Learn More
+              </motion.button>
+            </motion.div>
+
+            {/* Trust indicators */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 1,
+                ease: [0.25, 0.4, 0.25, 1],
+              }}
+              className="flex flex-wrap justify-center items-center gap-8 pt-8"
+            >
+              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                <Shield size={16} />
+                <span className="text-sm font-medium">Privacy First</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                <Zap size={16} />
+                <span className="text-sm font-medium">Instant AI Insights</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                <Users size={16} />
+                <span className="text-sm font-medium">Trusted by Thousands</span>
+              </div>
+            </motion.div>
           </div>
-          <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-            <Zap size={16} />
-            <span className="text-sm font-medium">Instant AI Insights</span>
-          </div>
-          <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-            <Users size={16} />
-            <span className="text-sm font-medium">Trusted by Thousands</span>
-          </div>
-        </motion.div>
+        </div>
+
       </section>
 
       {/* Features Section */}
-      <section className="space-y-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-center space-y-4"
-        >
+      <section className="relative space-y-16 py-20 px-4 sm:px-6 bg-white dark:bg-slate-900">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-center space-y-4"
+          >
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
             Everything you need for
             <span className="bg-gradient-to-r from-amber-500 to-rose-400 bg-clip-text text-transparent"> better decisions</span>
@@ -165,25 +356,42 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 * index }}
-              className="group p-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:border-amber-300/50 dark:hover:border-amber-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/10"
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
+              className="group relative p-8 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-3xl border border-slate-200/50 dark:border-slate-700/50 hover:border-transparent transition-all duration-300 shadow-xl hover:shadow-3d overflow-hidden"
             >
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <feature.icon size={24} className="text-white" />
+              {/* Gradient overlay on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+              
+              <div className="relative z-10">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className={`w-14 h-14 rounded-2xl ${feature.iconBg} flex items-center justify-center mb-6 shadow-lg group-hover:shadow-glow-md transition-all duration-300`}
+                >
+                  <feature.icon size={28} className="text-white" />
+                </motion.div>
+                
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-amber-600 group-hover:to-rose-500 transition-all duration-300">
+                  {feature.title}
+                </h3>
+                
+                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                {feature.description}
-              </p>
+              
+              {/* Corner accent */}
+              <div className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br ${feature.gradient} opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity duration-300`}></div>
             </motion.div>
           ))}
+        </div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section className="space-y-16">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="space-y-16 px-4 sm:px-6 py-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -289,10 +497,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
             </div>
           </motion.div>
         </div>
+        </div>
       </section>
 
       {/* CTA Section */}
-      <section className="text-center space-y-8 py-16">
+      <section className="text-center space-y-8 py-16 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -332,6 +542,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
         >
           Free to start • No credit card required • Privacy protected • Powered by Claude AI
         </motion.p>
+        </div>
       </section>
     </motion.div>
   );
