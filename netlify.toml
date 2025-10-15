@@ -2,6 +2,11 @@
   publish = "dist"
   command = "npm run build"
 
+[build.environment]
+# Allow Netlify's secret scanner to omit the public Supabase keys (anon key + URL)
+# These are Vite public env vars required at build/runtime.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL"
+
 [functions]
   node_bundler = "esbuild"
 
