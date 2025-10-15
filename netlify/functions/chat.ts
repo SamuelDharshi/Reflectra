@@ -226,12 +226,14 @@ async function handleVoiceFlow(event: any, opts: any) {
     let aiText = '';
     let aiProvider = '';
     
-    // Try different Gemini models in order
+    // Try different Gemini models in order (using valid model names)
     const geminiModels = [
       process.env.MODEL_NAME || 'gemini-2.0-flash',
-      'gemini-1.5-flash',
-      'gemini-1.5-pro',
-      'gemini-pro'
+      'gemini-2.0-flash',
+      'gemini-flash-latest',
+      'gemini-2.0-flash-lite',
+      'gemini-flash-lite-latest',
+      'gemini-2.5-flash-lite'
     ];
     
     if (process.env.GEMINI_API_KEY) {
