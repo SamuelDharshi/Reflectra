@@ -4,9 +4,9 @@ This document describes the `action=voice` flow implemented in `netlify/function
 
 Flow
 - Client sends audio (base64) in the request body as `audio_base64` (or `audio_url` pointing to a remote file).
-- Server attempts STT using OpenAI Whisper (`OPENAI_API_KEY` required). If not available, a placeholder transcription is returned.
+- Server attempts STT using ElevenLabs (`ELEVEN_API_KEY` required). If not available, a placeholder transcription is returned.
 - The transcription is sent to the AI (Gemini via `GEMINI_API_KEY`) with a short prompt requesting a concise reply.
-- The AI reply is synthesized using ElevenLabs (`ELEVEN_API_KEY`), producing base64-prefixed audio in the response.
+- The AI reply is synthesized using ElevenLabs (`ELEVEN_API_KEY`), producing base64 audio in the response.
 
 Request
 - POST /.netlify/functions/chat?action=voice
@@ -16,10 +16,9 @@ Request
   - `userContext` (optional): user context array
 
 Environment variables
-- `OPENAI_API_KEY` - (optional) used for Whisper transcription
+- `ELEVEN_API_KEY` - (required for STT & TTS) ElevenLabs API key used for both speech-to-text and text-to-speech
 - `GEMINI_API_KEY` - (optional) used for Gemini AI responses
 - `MODEL_NAME` - (optional) Gemini model name (defaults to `gemini-2.0-flash`)
-- `ELEVEN_API_KEY` - (optional) ElevenLabs API key for TTS
 - `VOICE_ID` - (optional) voice id for ElevenLabs (defaults to `alloy`)
 
 Response

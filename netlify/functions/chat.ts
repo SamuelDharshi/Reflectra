@@ -189,22 +189,22 @@ async function handleVoiceFlow(event: any, opts: any) {
       };
     }
 
-    // 1) Transcribe audio
+    // 1) Transcribe audio with ElevenLabs STT (requires ELEVEN_API_KEY)
     let transcription = '';
     let sttProvider = 'none';
-    if (process.env.OPENAI_API_KEY) {
+    if (process.env.ELEVEN_API_KEY) {
       try {
-        transcription = await transcribeWithOpenAI(audio_base64, audio_url);
-        sttProvider = 'openai-whisper';
+        transcription = await transcribeWithElevenLabs(audio_base64, audio_url);
+        sttProvider = 'eleven-stt';
       } catch (e: any) {
-        console.error('OpenAI transcription failed:', e?.message || e);
+        console.error('ElevenLabs transcription failed:', e?.message || e);
         transcription = '';
       }
     }
 
     if (!transcription) {
       // Fallback placeholder
-      transcription = 'Transcription not available. Please enable OPENAI_API_KEY for speech-to-text.';
+      transcription = 'Transcription not available. Please enable ELEVEN_API_KEY for speech-to-text.';
       sttProvider = 'placeholder';
     }
 
@@ -344,6 +344,46 @@ async function synthesizeWithElevenLabs(text: string, voiceId: string) {
     return audioBuffer.toString('base64');
   } catch (err: any) {
     console.error('synthesizeWithElevenLabs error:', err?.message || err);
+    throw err;
+  }
+}
+
+// ElevenLabs speech-to-text helper
+async function transcribeWithElevenLabs(base64Audio: string | null, audioUrl: string | null) {
+  try {
+    const apiKey = process.env.ELEVEN_API_KEY;
+    if (!apiKey) throw new Error('ELEVEN_API_KEY not set');
+
+    // ElevenLabs STT endpoint (public API shape may vary). We attempt to POST audio and receive a transcription.
+    // If ElevenLabs changes their API, adjust endpoint and request body accordingly.
+    const url = 'https://api.elevenlabs.io/v1/speech-to-text';
+
+    const form = new FormData();
+    if (base64Audio) {
+      const buffer = Buffer.from(base64Audio, 'base64');
+      form.append('file', buffer, { filename: 'audio.mp3', contentType: 'audio/mpeg' });
+    } else if (audioUrl) {
+      const resp = await axios.get(audioUrl, { responseType: 'arraybuffer' });
+      const buf = Buffer.from(resp.data);
+      form.append('file', buf, { filename: 'audio.mp3', contentType: 'audio/mpeg' });
+    }
+
+    // Optional params
+    form.append('language', 'en');
+
+    const resp = await axios.post(url, form, {
+      headers: {
+        'xi-api-key': apiKey,
+        ...form.getHeaders()
+      }
+    });
+
+    if (resp.status >= 400) throw new Error(`ElevenLabs STT failed: ${resp.status}`);
+
+    // Expecting { text: 'transcribed text' } or similar
+    return resp.data?.text || resp.data?.transcript || '';
+  } catch (err: any) {
+    console.error('transcribeWithElevenLabs error:', err?.message || err);
     throw err;
   }
 }
