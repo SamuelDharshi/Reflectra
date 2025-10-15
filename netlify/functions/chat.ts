@@ -221,10 +221,12 @@ async function handleVoiceFlow(event: any, opts: any) {
       sttProvider = 'placeholder';
     }
 
-    // 2) Generate brief AI response (reuse existing Gemini flow)
+    // 2) Generate brief AI response (try Gemini first, then Claude as fallback)
     const briefPrompt = buildBriefPrompt(transcription, opts.userContext);
     let aiText = '';
     let aiProvider = '';
+    
+    // Try Gemini first
     if (process.env.GEMINI_API_KEY) {
       try {
         console.log('Generating AI response with Gemini...');
@@ -238,6 +240,25 @@ async function handleVoiceFlow(event: any, opts: any) {
       } catch (e: any) {
         console.error('Gemini voice response failed:', e?.message || e);
         console.error('Full error:', e);
+        
+        // If Gemini fails (quota/error), try Claude as fallback
+        if (process.env.VITE_CLAUDE_API_KEY) {
+          try {
+            console.log('Trying Claude as fallback...');
+            const Anthropic = await import('@anthropic-ai/sdk');
+            const claude = new Anthropic.default({ apiKey: process.env.VITE_CLAUDE_API_KEY });
+            const message = await claude.messages.create({
+              model: 'claude-3-5-sonnet-20241022',
+              max_tokens: 150,
+              messages: [{ role: 'user', content: briefPrompt }]
+            });
+            aiText = message.content[0].type === 'text' ? message.content[0].text : '';
+            aiProvider = 'Claude (Sonnet 3.5)';
+            console.log('Claude fallback successful:', aiText);
+          } catch (claudeError: any) {
+            console.error('Claude fallback also failed:', claudeError?.message || claudeError);
+          }
+        }
       }
     } else {
       console.warn('GEMINI_API_KEY not set, using fallback');
