@@ -1,5 +1,7 @@
 import { Handler } from '@netlify/functions';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import axios from 'axios';
+import FormData from 'form-data';
 
 // Use Netlify Function environment variables
 const geminiApiKey = process.env.GEMINI_API_KEY;
@@ -35,6 +37,12 @@ const handler: Handler = async (event) => {
 
   try {
     const { message, userContext } = JSON.parse(event.body || '{}');
+    const action = (event?.queryStringParameters || {})['action'] || '';
+
+    // If action=voice, handle STT -> AI -> TTS flow
+    if (action === 'voice') {
+      return await handleVoiceFlow(event, { userContext });
+    }
 
     console.log('Parsed chat data:', { message, userContext });
 
@@ -164,3 +172,178 @@ function generateContextualFallback(message: string): string {
 }
 
 export { handler };
+
+// --- Voice flow helpers ---
+async function handleVoiceFlow(event: any, opts: any) {
+  try {
+    const body = JSON.parse(event.body || '{}');
+    const audio_base64 = body.audio_base64 || body.audio || null; // base64
+    const audio_url = body.audio_url || null; // optional remote URL
+    const voiceId = process.env.VOICE_ID || 'alloy';
+
+    if (!audio_base64 && !audio_url) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ success: false, error: 'No audio provided (send audio_base64 or audio_url)' })
+      };
+    }
+
+    // 1) Transcribe audio
+    let transcription = '';
+    let sttProvider = 'none';
+    if (process.env.OPENAI_API_KEY) {
+      try {
+        transcription = await transcribeWithOpenAI(audio_base64, audio_url);
+        sttProvider = 'openai-whisper';
+      } catch (e: any) {
+        console.error('OpenAI transcription failed:', e?.message || e);
+        transcription = '';
+      }
+    }
+
+    if (!transcription) {
+      // Fallback placeholder
+      transcription = 'Transcription not available. Please enable OPENAI_API_KEY for speech-to-text.';
+      sttProvider = 'placeholder';
+    }
+
+    // 2) Generate brief AI response (reuse existing Gemini flow)
+    const briefPrompt = buildBriefPrompt(transcription, opts.userContext);
+    let aiText = '';
+    let aiProvider = '';
+    if (process.env.GEMINI_API_KEY) {
+      try {
+        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({ model: process.env.MODEL_NAME || 'gemini-2.0-flash' });
+        const result = await model.generateContent(briefPrompt);
+        const response = await result.response;
+        aiText = response?.text?.() ?? '';
+        aiProvider = `Gemini (${process.env.MODEL_NAME || 'default'})`;
+      } catch (e: any) {
+        console.error('Gemini voice response failed:', e?.message || e);
+      }
+    }
+
+    if (!aiText) {
+      // Use a succinct fallback
+      aiText = generateContextualFallback(transcription).split('\n')[0];
+      aiProvider = 'Fallback Assistant';
+    }
+
+    // Ensure brevity: enforce short reply (trim to first 1-2 sentences)
+    aiText = forceBrief(aiText, 30); // 30 words max
+
+    // 3) Synthesize with ElevenLabs
+    let audio_base64_out = '';
+    let ttsProvider = 'none';
+    if (process.env.ELEVEN_API_KEY) {
+      try {
+        audio_base64_out = await synthesizeWithElevenLabs(aiText, voiceId);
+        ttsProvider = 'elevenlabs';
+      } catch (e: any) {
+        console.error('ElevenLabs TTS failed:', e?.message || e);
+      }
+    }
+
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: JSON.stringify({
+        success: true,
+        transcription,
+        sttProvider,
+        aiText,
+        aiProvider,
+        audio_base64: audio_base64_out,
+        ttsProvider
+      })
+    };
+  } catch (err: any) {
+    console.error('handleVoiceFlow error:', err);
+    return {
+      statusCode: 500,
+      headers: corsHeaders,
+      body: JSON.stringify({ success: false, error: err?.message || String(err) })
+    };
+  }
+}
+
+function buildBriefPrompt(transcription: string, userContext: any) {
+  let systemPrompt = `You are a concise, empathetic AI reflection assistant. Respond in a brief, helpful way.`;
+  if (userContext && userContext.length > 0) {
+    systemPrompt += ` Use the user's context to personalize the response.`;
+  }
+
+  const prompt = `${systemPrompt}\n\nUser said: "${transcription}"\n\nRespond in 1-3 short sentences, keep it under 30 words, supportive and actionable.`;
+  return prompt;
+}
+
+function forceBrief(text: string, maxWords = 30) {
+  if (!text) return '';
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length <= maxWords) return text.trim();
+  return words.slice(0, maxWords).join(' ').trim() + '...';
+}
+
+async function transcribeWithOpenAI(base64Audio: string | null, audioUrl: string | null) {
+  // Uses OpenAI Whisper if OPENAI_API_KEY is set. Accepts base64 audio or remote URL.
+  try {
+    const openaiKey = process.env.OPENAI_API_KEY;
+    if (!openaiKey) throw new Error('OPENAI_API_KEY not set');
+
+    const form = new FormData();
+
+    if (base64Audio) {
+      const buffer = Buffer.from(base64Audio, 'base64');
+      form.append('file', buffer, { filename: 'audio.mp3', contentType: 'audio/mpeg' });
+    } else if (audioUrl) {
+      const resp = await axios.get(audioUrl, { responseType: 'arraybuffer' });
+      const buf = Buffer.from(resp.data);
+      form.append('file', buf, { filename: 'audio.mp3', contentType: 'audio/mpeg' });
+    }
+
+    form.append('model', 'whisper-1');
+
+    const res = await axios.post('https://api.openai.com/v1/audio/transcriptions', form, {
+      headers: {
+        Authorization: `Bearer ${openaiKey}`,
+        ...form.getHeaders()
+      }
+    });
+
+    if (res.status >= 400) {
+      throw new Error(`OpenAI STT failed: ${res.status} ${JSON.stringify(res.data)}`);
+    }
+
+    return res.data?.text || '';
+  } catch (err: any) {
+    console.error('transcribeWithOpenAI error:', err?.message || err);
+    throw err;
+  }
+}
+
+async function synthesizeWithElevenLabs(text: string, voiceId: string) {
+  try {
+    const apiKey = process.env.ELEVEN_API_KEY;
+    if (!apiKey) throw new Error('ELEVEN_API_KEY not set');
+
+    // ElevenLabs streaming endpoint - return audio/mpeg
+    const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`;
+
+    const resp = await axios.post(url, { text }, {
+      responseType: 'arraybuffer',
+      headers: {
+        'xi-api-key': apiKey,
+        'Content-Type': 'application/json',
+        Accept: 'audio/mpeg'
+      }
+    });
+
+    const audioBuffer = Buffer.from(resp.data);
+    return audioBuffer.toString('base64');
+  } catch (err: any) {
+    console.error('synthesizeWithElevenLabs error:', err?.message || err);
+    throw err;
+  }
+}
