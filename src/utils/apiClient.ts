@@ -209,6 +209,36 @@ class AIAPIClient {
     }
   }
 
+  async sendVoiceAudio(audioBase64: string, userContext?: any[]) {
+    try {
+      console.log('Sending voice audio to AI (base64 length):', audioBase64?.length);
+      const response = await axios.post(
+        this.getEndpoint('chat') + '?action=voice',
+        {
+          audio_base64: audioBase64,
+          userContext: userContext || []
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 60000,
+          validateStatus: () => true
+        }
+      );
+
+      console.log('Voice AI response:', response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error('Error sending voice audio to AI:', error);
+      return {
+        success: false,
+        response: "I'm here to help — couldn't process the audio right now.",
+        provider: 'Fallback Assistant',
+        error: 'Service temporarily unavailable',
+        fallback: true
+      };
+    }
+  }
+
   // Utility method to check AI API health
   async checkAPIHealth() {
     try {
