@@ -248,7 +248,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={handleChatOpen}
-        className="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all duration-300 flex items-center justify-center group z-50 relative overflow-hidden"
+        className="!fixed !bottom-4 !right-4 md:!bottom-8 md:!right-8 !left-auto w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-amber-500 to-rose-400 hover:from-amber-600 hover:to-rose-500 text-white rounded-2xl shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all duration-300 flex items-center justify-center group z-50 relative overflow-hidden"
         aria-label="Open AI Chat Assistant"
       >
         {/* Shimmer effect */}
