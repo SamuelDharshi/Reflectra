@@ -224,7 +224,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
     }
   }
 
-  const handleVoiceStop = async (duration: number) => {
+  const handleVoiceStop = async (_duration: number) => {
     try {
       const mr = mediaRecorderRef.current;
       if (mr && mr.state !== 'inactive') {
@@ -292,16 +292,6 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, onClose }) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       sendMessage()
-    }
-  }
-
-  const getStatusColor = () => {
-    switch (connectionStatus) {
-      case 'connected': return 'text-emerald-400'
-      case 'fallback': return 'text-amber-400'
-      case 'offline': return 'text-rose-400'
-      case 'checking': return 'text-amber-400'
-      default: return 'text-gray-400'
     }
   }
 

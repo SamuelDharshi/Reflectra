@@ -11,10 +11,8 @@ import {
   Users, 
   Star,
   CheckCircle,
-  Download,
   Share2,
-  History,
-  MessageCircle
+  History
 } from 'lucide-react';
 
 interface LandingPageProps {

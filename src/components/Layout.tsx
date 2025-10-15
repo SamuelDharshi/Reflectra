@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Moon, Sun, Sparkles, LogIn, UserPlus, MessageCircle, Zap, Brain, Target, Menu, X } from 'lucide-react';
-import { cn } from '../utils/cn';
+import { Moon, Sun, LogIn, UserPlus, MessageCircle, Brain, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import AuthModal from './AuthModal';

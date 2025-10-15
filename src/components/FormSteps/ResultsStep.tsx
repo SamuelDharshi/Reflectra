@@ -24,7 +24,7 @@ const ResultsStep: React.FC<ResultsStepProps> = ({ userData, onBack, onReset }) 
   const [showPastAdvice, setShowPastAdvice] = useState(false);
   const [pastAdvice, setPastAdvice] = useState<any[]>([]);
   const [mood, setMood] = useState<string>('');
-  const [quote, setQuote] = useState(getRandomQuote());
+  const quote = getRandomQuote();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -451,7 +451,7 @@ Trust yourself - you have the wisdom to make the right choice.
                 Download
               </button>
 
-              {navigator.share && (
+              {typeof navigator.share === 'function' && (
                 <button
                   onClick={shareAdvice}
                   className="btn btn-secondary flex items-center gap-2"
@@ -461,7 +461,7 @@ Trust yourself - you have the wisdom to make the right choice.
                 </button>
               )}
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
 
@@ -499,7 +499,7 @@ Trust yourself - you have the wisdom to make the right choice.
                       </div>
                     </div>
                     <div className="prose prose-sm dark:prose-invert">
-                      {(reflection.ai_advice || reflection.advice).split('\n\n').slice(0, 2).map((paragraph, i) => (
+                      {(reflection.ai_advice || reflection.advice).split('\n\n').slice(0, 2).map((paragraph: string, i: number) => (
                         <p key={i} className="mb-3">{paragraph}</p>
                       ))}
                       {(reflection.ai_advice || reflection.advice).split('\n\n').length > 2 && (
