@@ -24,7 +24,8 @@ const ResultsStep: React.FC<ResultsStepProps> = ({ userData, onBack, onReset }) 
   const [showPastAdvice, setShowPastAdvice] = useState(false);
   const [pastAdvice, setPastAdvice] = useState<any[]>([]);
   const [mood, setMood] = useState<string>('');
-  const quote = getRandomQuote();
+  const [quote] = useState(() => getRandomQuote());
+
   const { user } = useAuth();
 
   useEffect(() => {
