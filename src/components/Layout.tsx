@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Moon, Sun, LogIn, UserPlus, MessageCircle, Brain, Menu, X } from 'lucide-react';
+import { Moon, Sun, LogIn, UserPlus, MessageCircle, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import AuthModal from './AuthModal';
 import UserMenu from './UserMenu';
 import ChatBot from './ChatBot';
+import logoImage from '../../Generated_Image_October_16__2025_-_11_52AM-removebg-preview.png';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -113,9 +114,11 @@ const Layout: React.FC<LayoutProps> = ({ children, fullWidth = false }) => {
               className="flex items-center gap-2 md:gap-4 hover:opacity-80 transition-opacity duration-300 cursor-pointer group"
             >
               <div className="relative">
-                <div className="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br from-amber-500 to-rose-400 flex items-center justify-center shadow-lg shadow-amber-500/25 group-hover:shadow-amber-500/40 transition-shadow duration-300">
-                  <Brain className="w-4 h-4 md:w-6 md:h-6 text-white" />
-                </div>
+                <img
+                  src={logoImage}
+                  alt="Reflectra logo"
+                  className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl object-contain shadow-lg shadow-amber-500/25 group-hover:shadow-amber-500/40 transition-shadow duration-300"
+                />
                 <div className="absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-2 h-2 md:w-4 md:h-4 bg-gradient-to-r from-rose-400 to-amber-500 rounded-full animate-pulse"></div>
               </div>
               <div className="hidden sm:block">
