@@ -222,7 +222,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
                 delay: 0.5,
                 ease: [0.25, 0.4, 0.25, 1],
               }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] dark:bg-white/[0.05] border border-amber-500/[0.2] dark:border-amber-400/[0.15] mb-8 md:mb-12 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] dark:bg-white/[0.05] border border-amber-500/[0.2] dark:border-amber-400/[0.15] mt-6 md:mt-10 mb-8 md:mb-12 backdrop-blur-sm"
             >
               <Circle className="h-2 w-2 fill-amber-500 text-amber-500 animate-pulse" />
               <Sparkles size={14} className="text-amber-500 dark:text-amber-400" />
