@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { User, LogOut, MessageCircle, History, Trash2, Calendar } from 'lucide-react'
+import { LogOut, MessageCircle, History, Trash2, Calendar } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
+import profileIcon from '../../7053329-removebg-preview.png'
 
 interface UserMenuProps {
   onChatOpen: () => void
@@ -19,18 +20,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
   const handleSignOut = async () => {
     await signOut()
     setIsOpen(false)
-  }
-
-  const getUserInitials = () => {
-    if (user?.user_metadata?.full_name) {
-      return user.user_metadata.full_name
-        .split(' ')
-        .map((name: string) => name[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
-    }
-    return user?.email?.[0]?.toUpperCase() || 'U'
   }
 
   const getUserDisplayName = () => {
@@ -109,9 +98,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
     return (
       <div className="space-y-3">
         <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-rose-400 flex items-center justify-center text-white text-sm font-medium">
-            {getUserInitials()}
-          </div>
+          <img
+            src={profileIcon}
+            alt="Profile icon"
+            className="w-8 h-8 rounded-lg object-cover"
+          />
+
           <div>
             <p className="font-medium text-slate-900 dark:text-white text-sm">
               {getUserDisplayName()}
@@ -195,9 +187,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-3 p-2 rounded-xl bg-white/50 dark:bg-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/70 transition-colors duration-300 shadow-lg shadow-slate-400/10 dark:shadow-slate-500/10"
       >
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-sm font-medium">
-          {getUserInitials()}
-        </div>
+        <img
+          src={profileIcon}
+          alt="Profile icon"
+          className="w-8 h-8 rounded-lg object-cover"
+        />
+
         <span className="hidden sm:block text-sm font-medium text-slate-700 dark:text-slate-200">
           {getUserDisplayName()}
         </span>
@@ -218,9 +213,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ onChatOpen, isMobile = false }) => 
             >
               <div className="p-4 border-b border-slate-100 dark:border-slate-700">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-rose-400 flex items-center justify-center text-white font-medium">
-                    {getUserInitials()}
-                  </div>
+                  <img
+                    src={profileIcon}
+                    alt="Profile icon"
+                    className="w-10 h-10 rounded-xl object-cover"
+                  />
+
                   <div>
                     <p className="font-medium text-slate-700 dark:text-slate-200">
                       {getUserDisplayName()}
