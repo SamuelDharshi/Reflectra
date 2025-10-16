@@ -152,7 +152,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
       transition={{ duration: 0.5 }}
     >
       {/* Hero Section with Geometric Shapes - Full Width */}
-      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative w-screen min-h-screen flex items-center justify-center overflow-hidden -ml-[50vw] left-1/2 bg-transparent">
         {/* Floating geometric shapes */}
         <div className="absolute inset-0">
           <ElegantShape
@@ -212,7 +212,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
 
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto text-center space-y-8 pt-16 md:pt-20">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -222,7 +222,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
                 delay: 0.5,
                 ease: [0.25, 0.4, 0.25, 1],
               }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] dark:bg-white/[0.05] border border-amber-500/[0.2] dark:border-amber-400/[0.15] mb-8 md:mb-12 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] dark:bg-white/[0.05] border border-amber-500/[0.2] dark:border-amber-400/[0.15] mt-6 md:mt-10 mb-8 md:mb-12 backdrop-blur-sm"
             >
               <Circle className="h-2 w-2 fill-amber-500 text-amber-500 animate-pulse" />
               <Sparkles size={14} className="text-amber-500 dark:text-amber-400" />
@@ -328,6 +328,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
           </div>
         </div>
 
+        {/* Gradient overlay for smooth transition */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white dark:from-slate-900 to-transparent pointer-events-none" />
       </section>
 
       {/* Features Section */}

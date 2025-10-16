@@ -103,7 +103,7 @@ const Layout: React.FC<LayoutProps> = ({ children, fullWidth = false }) => {
         style={{ zIndex: 40 }}
       >
         <div className="max-w-6xl mx-auto">
-          <div className="relative px-4 sm:px-6 py-3 md:py-4 rounded-2xl border border-white/30 dark:border-white/10 bg-white/40 dark:bg-slate-900/40 backdrop-blur-2xl shadow-[0_25px_60px_-20px_rgba(15,23,42,0.45)]">
+          <div className="relative px-4 sm:px-6 py-3 md:py-4 rounded-2xl border border-amber-100/60 dark:border-slate-800/60 bg-gradient-to-br from-amber-50/90 via-white/85 to-rose-50/90 dark:from-slate-950/85 dark:via-slate-900/80 dark:to-amber-950/45 backdrop-blur-xl shadow-[0_25px_60px_-20px_rgba(15,23,42,0.35)]">
             <div className="flex justify-between items-center">
             {/* Logo */}
             <motion.button 
