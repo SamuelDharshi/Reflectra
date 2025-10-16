@@ -117,7 +117,7 @@ const Layout: React.FC<LayoutProps> = ({ children, fullWidth = false }) => {
                 <img
                   src={logoImage}
                   alt="Reflectra logo"
-                  className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl object-contain shadow-lg shadow-amber-500/25 group-hover:shadow-amber-500/40 transition-shadow duration-300"
+                  className="w-12 h-12 md:w-16 md:h-16 object-contain"
                 />
                 <div className="absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-2 h-2 md:w-4 md:h-4 bg-gradient-to-r from-rose-400 to-amber-500 rounded-full animate-pulse"></div>
               </div>
