@@ -152,7 +152,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onStartReflecti
       transition={{ duration: 0.5 }}
     >
       {/* Hero Section with Geometric Shapes - Full Width */}
-      <section className="relative w-screen min-h-screen flex items-center justify-center overflow-hidden -ml-[50vw] left-1/2 bg-gradient-to-br from-amber-500/[0.08] via-rose-400/[0.05] to-violet-500/[0.08]">
+      <section className="relative w-screen min-h-screen flex items-center justify-center overflow-hidden -ml-[50vw] left-1/2 bg-transparent">
         {/* Floating geometric shapes */}
         <div className="absolute inset-0">
           <ElegantShape
