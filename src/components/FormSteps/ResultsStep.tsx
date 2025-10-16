@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, RefreshCw, Share2, ChevronDown, ChevronUp, Quote, AlertCircle, Sparkles, Zap } from 'lucide-react';
